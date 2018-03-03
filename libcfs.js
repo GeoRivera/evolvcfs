@@ -1,5 +1,14 @@
 /* ----------------------------------------------------------------------------
     Utility LIB
+    https://rawgit.com/GeoRivera/evolvcfs/master/libcfs.js
+
+
+    $('body').append('<script src=\'https://rawgit.com/GeoRivera/evolvcfs/master/libcfs.js\'></script>');
+
+    In the Forms [After Load] field:
+      $(&apos;body&apos;).append(&apos;&lt;script src=\&apos;https://rawgit.com/GeoRivera/evolvcfs/master/libcfs.js\&apos;&gt;&lt;/script&gt;&apos;);
+
+
 ---------------------------------------------------------------------------- */
 (function (window, document, undefined) {
   window.parent.$$ = {
@@ -8,7 +17,7 @@
      *
      */
     hello: function () {
-      alert("Hello. It works");
+      alert("Hello. It works!");
     },
 
 
