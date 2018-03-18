@@ -1,24 +1,32 @@
-const _escExp = (qry) => {
-    let res = '';
-    qry = qry.replace(/{{/g, "''{{").replace(/}}/g, "{{''").replace(/{#/g, "{{").replace(/#}/g, "{{").split('{{');
-    if (qry.length % 2 !== 0) qry[qry.length] = 'String.fromCharCode(32)';
-
-    for (let i = 0; i < qry.length; i += 2) {
-        res += qry[i] + eval(qry[i + 1]);
-    }
-    return res
+const _tryCatch = (fn) => {
+    try {
+        fn()
+    } catch (e) {}
 }
 
-
-
-
-function tp(str) {
-    programId = '987653';
-    blah = 123
-    // var r = _escExp.call(this, 'program_info_id = {{programId}};')
-    var r = _escExp('program_info_id = {{programId}} AND people_id = {#blah#} AND test = {{programId}}')
-    // var r = _escExp('program_info_id = {{programId}}')
-    console.log(r);
+function makeRequired(x) {
+    x.id = 'Required'
+    return x //?
 }
 
-tp()
+function makeUnRequired(x) {
+    x.id = 'UnRequired'
+    return x //?
+}
+
+const _box = (x) => {
+    return Array.isArray(x) ? x : [x]
+};
+
+const setRequired = (xs, bool) => {
+    xs = _box(xs).slice();
+    let fn = (bool) ? makeRequired : makeUnRequired;
+    xs.map(x => _tryCatch(fn({
+        id: x
+    })))
+}
+
+// setRequired('blah', 0)
+setRequired(['foo', 'bar', 'baz'], 1)
+
+_box(['blah']) //?

@@ -1,6 +1,10 @@
 (function (Global, document) {
     const _fromNullable = (x) => (x === undefined || !x)
 
+    const _box = (x) => {
+        return Array.isArray(x) ? x : [x]
+    }
+
     const _where = (str) => {
         let res = '';
         qry = qry.replace(/{{/g, "''{{").replace(/}}/g, "{{''").replace(/{#/g, "{{").replace(/#}/g, "{{").split('{{');
@@ -35,7 +39,7 @@
         },
 
         setXMLAttribute: (xs, attr, val) => {
-            xs = xs.slice();
+            xs = _box(xs).slice();
 
             if (typeof (val) === 'number') {
                 val = (val) ? 'true' : 'false';
@@ -46,13 +50,11 @@
         },
 
         setRequired: (xs, bool) => {
-            for (let i = 0; i < xs.length; i++) {
-                let fn = (bool) ? makeRequired : makeUnRequired;
-
-                _tryCatch(fn({
-                    id: xs[i]
-                }));
-            }
+            xs = _box(xs).slice();
+            let fn = (bool) ? makeRequired : makeUnRequired;
+            xs.map(x => _tryCatch(fn({
+                id: x
+            })))
         },
 
         setElement: (el, val) => {
