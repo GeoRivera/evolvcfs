@@ -142,6 +142,20 @@
     },
 
     /**
+     * Sets [is_required] property of a field element in the Form's XML
+     *
+     * @param {string} xs Array of field names
+     * @param {bool} is_req {true} makes required, {false} not required
+     */
+    setRequired: function (xs, is_req) {
+      is_req = (is_req ? 'true' : 'false')
+      for (var i = 0; i < xs.length; i++) {
+        getNodeFromXML(formXML, xs[i]).setAttribute('is_required', is_req);
+      }
+      // repaintFormXML();
+    },
+
+    /**
      * Inspects the current Form for fiels and variable and shows their current values in an alert window
      *
      */
