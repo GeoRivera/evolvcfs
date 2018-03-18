@@ -1,4 +1,4 @@
-(function () {
+(function (Global, document) {
     const _fromNullable = (x) => (x === undefined || !x)
 
     const _where = (str) => {
@@ -20,7 +20,7 @@
         } catch (e) {}
     }
 
-    $$ = {
+    Global.$$ = {
 
         getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
 
@@ -68,4 +68,4 @@
     };
 
     return $$
-})()
+})(window.parent, document)
