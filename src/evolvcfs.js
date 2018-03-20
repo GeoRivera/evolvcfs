@@ -24,11 +24,8 @@
         } catch (e) {}
     }
 
+
     Global.$$ = {
-
-        getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
-
-        getClientAge: (peopleId) => getDataValue('client_personal_view', 'people_id', peopleId, 'age'),
 
         hasActiveEnrollment: function (peopleId, programId) {
             const cond = _where('program_info_id = {{programId}}');
@@ -47,6 +44,7 @@
             for (let i = 0; i < xs.length; i++) {
                 _tryCatch(getNodeFromXML(formXML, xs[i]).setAttribute(attr, val));
             }
+            refreshView(xs[0]);
         },
 
         setRequired: (xs, bool) => {
@@ -66,7 +64,29 @@
                 setElementFromXML(formXML, el, val);
                 xmlNode.setAttribute('is_modifiable', isMod);
             }
+        },
+
+        getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
+
+        getClientAge: (peopleId) => getDataValue('client_personal_view', 'people_id', peopleId, 'age'),
+
+        getNodeFromXML: (el, obj) => {
+            obj = (_fromNullable(obj)) ? formXML : obj;
+            var res = null;
+
+            if (el.charAt(0) !== '#') {
+                res = obj.selectSingleNode("form_object/form_group/form_item[@column_name='" + el + "']") || obj.selectSingleNode("form_group/form_item[@column_name='" + el + "']");
+            } else {
+                res = obj.selectSingleNode("form_object/form_group/form_item[@caption='" + el.slice(1) + "']") || obj.selectSingleNode("form_group/form_item[@caption='" + el.slice(1) + "']");
+            }
+            return res
+        },
+
+        refreshView: (obj) => {
+            xslTarget.innerHTML = transformXML(formXSL.XMLDocument.xml, formXML.xml);
+            IsDirty() && formState(obj.form, true);
         }
+
     };
 
     return $$
