@@ -3,6 +3,7 @@
 This is a "first stab" at develping a helper function library for developing Evolv-CS Forms.
 The javascript needs to work on IE5 so... Yeah, it's that bad.
 
-+ Prod: https://cdn.rawgit.com/GeoRivera/evolvcfs/83857747/libcfs.js
++ Dev: 
+$('body').append('<script src=\'https://rawgit.com/GeoRivera/evolvcfs/dev/lib/evolvcfs.js\'></script>');
 
-+ Dev: https://rawgit.com/GeoRivera/evolvcfs/master/libcfs.js
+$(&apos;body&apos;).append(&apos;&lt;script src=\&apos;https://rawgit.com/GeoRivera/evolvcfs/dev/lib/evolvcfs.js\&apos;&gt;&lt;/script&gt;&apos;);
