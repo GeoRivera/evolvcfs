@@ -1,32 +1,27 @@
-const _tryCatch = (fn) => {
-    try {
-        fn()
-    } catch (e) {}
+function _where(qry) {
+    qry = qry.replace(/{{/g, "\\\'\\\'\' + {{").replace(/}}/g, " + '\\\'\\\' {{")
+        .replace(/{#/g, "\' + {{").replace(/#}/g, " + ' {{").split('{{');
+
+    console.log(qry);
+    return "\'" + qry.reduce((acc, val) => acc + val, '') + "\'";
 }
 
-function makeRequired(x) {
-    x.id = 'Required'
-    return x //?
+
+function hasActiveEnrollment(peopleId, programId, blob) {
+    var blah = eval("\'program_info_id = \\\'\\\'\' + programId + \'\\\'\\\'\'");
+    console.log(blah);
+
+    // var cond = _where('program_info_id = {{programId}}'); //?
+    // var cond = eval(_where('program_info_id = {@fieldName@}')); //?
+    var cond = eval(_where('program_info_id = {#programId#} AND test_id = {{blob}}')); //?
+    console.log(cond);
+    // var has_enrollment = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'program_name', cond);
+    // var end_date = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'end_date', cond);
+
+    // return has_enrollment && !end_date;
 }
 
-function makeUnRequired(x) {
-    x.id = 'UnRequired'
-    return x //?
-}
 
-const _box = (x) => {
-    return Array.isArray(x) ? x : [x]
-};
 
-const setRequired = (xs, bool) => {
-    xs = _box(xs).slice();
-    let fn = (bool) ? makeRequired : makeUnRequired;
-    xs.map(x => _tryCatch(fn({
-        id: x
-    })))
-}
-
-// setRequired('blah', 0)
-setRequired(['foo', 'bar', 'baz'], 1)
-
-_box(['blah']) //?
+hasActiveEnrollment('tpeople', '1234', 'blob')
+// _where('blah') //?

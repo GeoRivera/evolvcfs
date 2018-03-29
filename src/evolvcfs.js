@@ -5,17 +5,12 @@
         return Array.isArray(x) ? x : [x]
     }
 
-    const _where = (str) => {
-        let res = '';
-        qry = qry.replace(/{{/g, "''{{").replace(/}}/g, "{{''").replace(/{#/g, "{{").replace(/#}/g, "{{").split('{{');
-
-        if (qry.length % 2 !== 0) {
-            qry[qry.length] = 'String.fromCharCode(32)'
-        };
-        for (let i = 0; i < qry.length; i += 2) {
-            res += qry[i] + eval(qry[i + 1]);
-        }
-        return res
+    const _where = (qry) => {
+        let res = qry.replace(/{{/g, "\\\'\\\'\' + {{")
+            .replace(/}}/g, " + '\\\'\\\' {{")
+            .replace(/{#/g, "\' + {{")
+            .replace(/#}/g, " + ' {{").split('{{');
+        return "\'" + res.reduce((acc, val) => acc + val, '') + "\'";
     }
 
     const _tryCatch = (fn) => {
@@ -28,7 +23,7 @@
     Global.$$ = {
 
         hasActiveEnrollment: function (peopleId, programId) {
-            const cond = _where('program_info_id = {{programId}}');
+            const cond = eval(_where('program_info_id = {{programId}}'));
             const has_enrollment = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'program_name', cond);
             const end_date = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'end_date', cond);
 
