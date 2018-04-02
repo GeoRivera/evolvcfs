@@ -11,8 +11,8 @@ module.exports = {
                 "message": "Unexpected property on console object was called"
             }
         ],
-        "indent": ["error", 4, {
-            "MemberExpression": 1
-        }]
+        // "indent": ["error", 4, {
+        //     "MemberExpression": 1
+        // }]
     }
 }

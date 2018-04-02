@@ -1,6 +1,8 @@
 (function (Global, document) {
     const _fromNullable = (x) => (x === undefined || !x)
 
+    const _toDate = (x) => new Date(x);
+
     const _box = (x) => {
         return Array.isArray(x) ? x : [x]
     }
@@ -18,6 +20,7 @@
             fn()
         } catch (e) {}
     }
+
 
 
     Global.$$ = {
@@ -80,6 +83,28 @@
         refreshView: (obj) => {
             xslTarget.innerHTML = transformXML(formXSL.XMLDocument.xml, formXML.xml);
             IsDirty() && formState(obj.form, true);
+        },
+
+        dtComp: (dt1, dt2, comp) => {
+            dt1 = _toDate(dt1);
+            dt2 = _toDate(dt2);
+            switch (comp) {
+                case '>':
+                    return dt1 > dt2
+                case '>=':
+                    return dt1 >= dt2
+                case '<':
+                    return dt1 < dt2
+                case '<=':
+                    return dt1 <= dt2
+                case '=':
+                    return dt1 === dt2
+                case '!=':
+                    return dt1 !== dt2
+
+                default:
+                    return false;
+            }
         }
 
     };
