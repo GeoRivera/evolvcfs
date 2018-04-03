@@ -1,9 +1,18 @@
 {
     "presets": [
-        ["env", {
-            "targets": {
-                "ie": 6
+        ["env",
+            {
+                "targets": {
+                    "ie": 6
+                }
             }
-        }]
+        ],
+        ["minify",
+            {
+                "mangle": {
+                    "exclude": ["hasActiveEnrollment"]
+                }
+            }
+        ]
     ]
 }
