@@ -85,21 +85,29 @@
             IsDirty() && formState(obj.form, true);
         },
 
-        dtComp: (dt1, dt2, comp) => {
-            dt1 = _toDate(dt1);
-            dt2 = _toDate(dt2);
+        dtComp: (dt1, comp, dt2) => {
+            dt1 = Object.prototype.toString.call(dt1) === '[object String]' ? this.getElement(dt1) : _toDate(dt1);
+            dt2 = Object.prototype.toString.call(dt2) === '[object String]' ? this.getElement(dt2) : _toDate(dt2);
             switch (comp) {
                 case '>':
+                    return dt1 > dt2
+                case 'after':
                     return dt1 > dt2
                 case '>=':
                     return dt1 >= dt2
                 case '<':
                     return dt1 < dt2
+                case 'before':
+                    return dt1 < dt2
                 case '<=':
                     return dt1 <= dt2
                 case '=':
                     return dt1 === dt2
+                case 'equal':
+                    return dt1 === dt2
                 case '!=':
+                    return dt1 !== dt2
+                case 'different':
                     return dt1 !== dt2
 
                 default:
