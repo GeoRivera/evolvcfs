@@ -11,8 +11,11 @@ module.exports = {
                 "message": "Unexpected property on console object was called"
             }
         ],
-        // "indent": ["error", 4, {
-        //     "MemberExpression": 1
-        // }]
+        "no-undef": ["off"],
+        "eqeqeq": ["error", "smart"],
+        "newline-per-chained-call": ["error", {
+            "ignoreChainWithDepth": 2
+        }]
+
     }
 }

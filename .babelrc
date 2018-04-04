@@ -11,7 +11,8 @@
             {
                 "mangle": {
                     "exclude": ["hasActiveEnrollment"]
-                }
+                },
+                "simplifyComparisons": false
             }
         ]
     ]
