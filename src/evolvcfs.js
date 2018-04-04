@@ -11,7 +11,8 @@
         let res = qry.replace(/{{/g, "\\\'\\\'\' + {{")
             .replace(/}}/g, " + '\\\'\\\' {{")
             .replace(/{#/g, "\' + {{")
-            .replace(/#}/g, " + ' {{").split('{{');
+            .replace(/#}/g, " + ' {{")
+.split('{{');
         return "\'" + res.reduce((acc, val) => acc + val, '') + "\'";
     }
 
@@ -89,6 +90,14 @@
             Object.prototype.toString.call(dt1) === '[object String]' && _toDate($$.getElement(dt1));
             Object.prototype.toString.call(dt2) === '[object String]' && _toDate($$.getElement(dt2));
             switch (comp) {
+                case '=':
+                    return dt1.toString() === dt2.toString()
+                case 'equal':
+                    return dt1.toString() === dt2.toString()
+                case '!=':
+                    return dt1.toString() !== dt2.toString()
+                case 'different':
+                    return dt1.toString() !== dt2.toString()
                 case '>':
                     return dt1 > dt2
                 case 'after':
@@ -101,14 +110,6 @@
                     return dt1 < dt2
                 case '<=':
                     return dt1 <= dt2
-                case '=':
-                    return dt1.toString() === dt2.toString()
-                case 'equal':
-                    return dt1.toString() === dt2.toString()
-                case '!=':
-                    return dt1.toString() !== dt2.toString()
-                case 'different':
-                    return dt1.toString() !== dt2.toString()
 
                 default:
                     return false;
