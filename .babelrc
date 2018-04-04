@@ -6,14 +6,14 @@
                     "ie": 6
                 }
             }
-        ],
-        ["minify",
-            {
-                "mangle": {
-                    "exclude": ["hasActiveEnrollment"]
-                },
-                "simplifyComparisons": false
-            }
         ]
+        // ["minify",
+        //     {
+        //         "mangle": {
+        //             "exclude": ["hasActiveEnrollment"]
+        //         },
+        //         "simplifyComparisons": false
+        //     }
+        // ]
     ]
 }
