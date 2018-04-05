@@ -12,7 +12,7 @@
             .replace(/}}/g, " + '\\\'\\\' {{")
             .replace(/{#/g, "\' + {{")
             .replace(/#}/g, " + ' {{")
-.split('{{');
+            .split('{{');
         return "\'" + res.reduce((acc, val) => acc + val, '') + "\'";
     }
 
@@ -87,8 +87,8 @@
         },
 
         dtComp: (dt1, comp, dt2) => {
-            Object.prototype.toString.call(dt1) === '[object String]' && _toDate($$.getElement(dt1));
-            Object.prototype.toString.call(dt2) === '[object String]' && _toDate($$.getElement(dt2));
+            dt1 = Object.prototype.toString.call(dt1) === '[object String]' ? _toDate($$.getElement(dt1)) : dt1;
+            dt2 = Object.prototype.toString.call(dt2) === '[object String]' ? _toDate($$.getElement(dt2)) : dt2;
             switch (comp) {
                 case '=':
                     return dt1.toString() === dt2.toString()
