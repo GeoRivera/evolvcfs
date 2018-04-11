@@ -56,12 +56,25 @@
 
         setElement: (el, val) => {
             if (formElementExists(el)) {
-                const xmlNode = getNodeFromXML(formXML, el);
-                const isMod = xmlNode.getAttribute('is_modifiable');
+                var xmlNode = getNodeFromXML(el, formXML);
+                var notModifiable = xmlNode.getAttribute('is_modifiable') === 'true' ? true : false;
+                var elObj = $('#' + el);
 
                 xmlNode.setAttribute('is_modifiable', 'true');
-                setElementFromXML(formXML, el, val);
-                xmlNode.setAttribute('is_modifiable', isMod);
+
+                // Sets DateTime type fields appropriately
+                if ((elObj.attr('type_code') === 'DT') || (elObj.attr('type_code') === 'D')) {
+                    var dtTime = val.split(/\s/i)
+                    var date = dtTime[0];
+                    var time = (dtTime[1] ? dtTime[1] : '') + (dtTime[2] ? dtTime[2] : '');
+                    setFormElement(el, date);
+                    setFormElement('time_' + el, time);
+                    notModifiable && $('#time_' + el).attr('disabled', !notModifiable);
+                } else {
+                    setFormElement(el, val);
+                }
+
+                notModifiable && elObj.attr('disabled', !notModifiable);
             }
         },
 
