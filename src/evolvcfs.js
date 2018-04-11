@@ -127,6 +127,14 @@
                 default:
                     return false;
             }
+        },
+
+        valiDate: (msg, ...args) => {
+            const [, , dt2] = [...args]
+            if ($$.dtComp(...args)) {
+                alert(msg);
+                $$.setElement(dt2, '');
+            }
         }
 
     };
