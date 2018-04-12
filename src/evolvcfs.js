@@ -3,6 +3,8 @@
 
     const _toDate = (x) => new Date(x);
 
+    const _dtFieldToDate = (x) => Object.prototype.toString.call(x) === '[object String]' ? _toDate($$.getElement(x)) : x;
+
     const _box = (x) => {
         return Array.isArray(x) ? x : [x]
     }
@@ -104,8 +106,8 @@
         },
 
         dtComp: (dt1, comp, dt2) => {
-            dt1 = Object.prototype.toString.call(dt1) === '[object String]' ? _toDate($$.getElement(dt1)) : dt1;
-            dt2 = Object.prototype.toString.call(dt2) === '[object String]' ? _toDate($$.getElement(dt2)) : dt2;
+            dt1 = _dtFieldToDate(dt1);
+            dt2 = _dtFieldToDate(dt2);
             switch (comp) {
                 case '=':
                     return dt1.toString() === dt2.toString()
@@ -133,11 +135,35 @@
             }
         },
 
-        valiDate: (msg, ...args) => {
-            const [, , dt2] = [...args]
-            if ($$.dtComp(...args)) {
-                alert(msg);
-                $$.setElement(dt2, '');
+        dateIsAfter: (dt1, dt2, errMsg) => {
+            if (!$$.dtComp(dt1, 'after', dt2)) {
+                alert(errMsg);
+                $$.setElement(dt1, '');
+            }
+        },
+        dateIsBefore: (dt1, dt2, errMsg) => {
+            if (!$$.dtComp(dt1, 'before', dt2)) {
+                alert(errMsg);
+                $$.setElement(dt1, '');
+            }
+        },
+
+        // valiDate: (msg, ...args) => {
+        //     const [, , dt2] = [...args]
+        //     if ($$.dtComp(...args)) {
+        //         alert(msg);
+        //         $$.setElement(dt2, '');
+        //     }
+        // },
+
+        isAtMostHoursAfter: (dt1, hours, dt2, errMsg) => {
+            dt1 = _dtFieldToDate(dt1);
+            dt2 = _dtFieldToDate(dt2);
+            const timeDiff = (dt2 - dt1) / 60 / 60 / 1000;
+
+            if (timeDiff > hours) {
+                alert(errMsg);
+                $$.setElement(dt1, '');
             }
         }
 
