@@ -183,8 +183,7 @@ setTimeout(function () {
     var fieldName = 'udf_datetimeofrequest_TA';
     $('#time_' + fieldName)
         .change(function () {
-            if (() && ())
-                $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date.');
+            $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date.');
             $$.setRequiredIfEntered('udf_datetimeofrequest_TA');
         })
 }, 50);
