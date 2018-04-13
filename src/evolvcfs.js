@@ -148,6 +148,23 @@
             }
         },
 
+        allDt: (arr) => {
+            let errMsg = '';
+            let passedAllChecks = arr.reduce((acc, xs) => {
+                let [dt1, comp, dt2, msg] = [...xs];
+                let chkCurrCondition = $$.dtComp(dt1, comp, dt2)
+                if (!chkCurrCondition) {
+                    errMsg += msg + '\n';
+                    $$.setElement(dt1, '');
+                }
+                return acc && chkCurrCondition
+            }, true)
+
+            if (!passedAllChecks) {
+                alert(errMsg);
+            }
+        },
+
         // valiDate: (msg, ...args) => {
         //     const [, , dt2] = [...args]
         //     if ($$.dtComp(...args)) {
