@@ -1,12 +1,18 @@
 // Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\PCI\VEN_8086&DEV_9D03&SUBSYS_073D1028&REV_21\3&11583659&0&B8\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties
 
 (function () {
+    const _fromNullable = (x) => (x === undefined || !x)
+
     const _toDate = (x) => new Date(x);
 
     const _dtFieldToDate = (x) => Object.prototype.toString.call(x) === '[object String]' ? _toDate($$.getElement(x)) : x;
 
 
     $$ = {
+        isBlank: (fieldName) => (getFormElement(fieldName) === ''),
+
+        isBlankDt: (fieldName) => (isBlank(fieldName) && isBlank('time_' + fieldName)),
+
         dtComp: (dt1, comp, dt2) => {
             dt1 = _dtFieldToDate(dt1);
             dt2 = _dtFieldToDate(dt2);
@@ -70,6 +76,7 @@
             }
         },
 
+
     }
     return $$
 }())
@@ -89,6 +96,9 @@ function alert(x) {
 }
 $$.allDt(blah);
 
+console.log(null !== null);
+console.log($$._fromNullable(undefined));
+
 [
     ['actual_date', '>=', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED.'],
     ['udf_datetimeofrequest_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time of Request must be after Date/Time Arrived in ED.'],
@@ -105,6 +115,27 @@ $$.allDt(blah);
 
 
 
+setTimeout(function () {
+    var fieldName = 'udf_datetimearrivedined_TA';
+    $('#time_' + fieldName)
+        .change(function () {
+            $$.allDt(
+                [
+                    ['actual_date', '>=', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimeofrequest_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time of Request must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimeofreadiness_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Readiness must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimeinterventinbegan_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Began must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimeinterventionended_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Ended must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimebedsearchbegan_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Bed Search Began must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimeplacementsecured_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Placement Secured must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimecallplacedforconsult_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Call Placed for Consult must be after Date/Time Arrived in ED.'],
+                    ['udf_datetimesonsultbegan_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Consult Began must be after Date/Time Arrived in ED.'],
+                    ['udf_dateforemrgencypschopharm_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Called for Emergency Psychopharm must be after Date/Time Arrived in ED.']
+                ]
+            )
+        })
+}, 50);
+
 
 
 
@@ -113,17 +144,31 @@ $$.allDt(blah);
 **************************************************************************** */
 // 5 udf_datetimearrivedined_TA
 // Earliest Date/Time in the Form
-$$.allDt
-$$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimeofrequest_TA', 'udf_datetimearrivedined_TA', 'Date/Time of Request must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimeofreadiness_TA', 'udf_datetimearrivedined_TA', 'Date/Time Readiness must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimeinterventinbegan_TA', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Began must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimeinterventionended_TA', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Ended must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimebedsearchbegan_TA', 'udf_datetimearrivedined_TA', 'Date/Time Bed Search Began must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimeplacementsecured_TA', 'udf_datetimearrivedined_TA', 'Date/Time Placement Secured must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimecallplacedforconsult_TA', 'udf_datetimearrivedined_TA', 'Date/Time Call Placed for Consult must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_datetimesonsultbegan_TA', 'udf_datetimearrivedined_TA', 'Date/Time Consult Began must be after Date/Time Arrived in ED.');
-$$.dateIsAfter('udf_dateforemrgencypschopharm_TA', 'udf_datetimearrivedined_TA', 'Date/Time Called for Emergency Psychopharm must be after Date/Time Arrived in ED.');
+$$.allDt(
+    [
+        ['actual_date', '>=', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED.'],
+        ['udf_datetimeofrequest_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time of Request must be after Date/Time Arrived in ED.'],
+        ['udf_datetimeofreadiness_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Readiness must be after Date/Time Arrived in ED.'],
+        ['udf_datetimeinterventinbegan_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Began must be after Date/Time Arrived in ED.'],
+        ['udf_datetimeinterventionended_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Ended must be after Date/Time Arrived in ED.'],
+        ['udf_datetimebedsearchbegan_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Bed Search Began must be after Date/Time Arrived in ED.'],
+        ['udf_datetimeplacementsecured_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Placement Secured must be after Date/Time Arrived in ED.'],
+        ['udf_datetimecallplacedforconsult_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Call Placed for Consult must be after Date/Time Arrived in ED.'],
+        ['udf_datetimesonsultbegan_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Consult Began must be after Date/Time Arrived in ED.'],
+        ['udf_dateforemrgencypschopharm_TA', '>=', 'udf_datetimearrivedined_TA', 'Date/Time Called for Emergency Psychopharm must be after Date/Time Arrived in ED.']
+    ]
+)
+
+// $$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimeofrequest_TA', 'udf_datetimearrivedined_TA', 'Date/Time of Request must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimeofreadiness_TA', 'udf_datetimearrivedined_TA', 'Date/Time Readiness must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimeinterventinbegan_TA', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Began must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimeinterventionended_TA', 'udf_datetimearrivedined_TA', 'Date/Time Intervention Ended must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimebedsearchbegan_TA', 'udf_datetimearrivedined_TA', 'Date/Time Bed Search Began must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimeplacementsecured_TA', 'udf_datetimearrivedined_TA', 'Date/Time Placement Secured must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimecallplacedforconsult_TA', 'udf_datetimearrivedined_TA', 'Date/Time Call Placed for Consult must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_datetimesonsultbegan_TA', 'udf_datetimearrivedined_TA', 'Date/Time Consult Began must be after Date/Time Arrived in ED.');
+// $$.dateIsAfter('udf_dateforemrgencypschopharm_TA', 'udf_datetimearrivedined_TA', 'Date/Time Called for Emergency Psychopharm must be after Date/Time Arrived in ED.');
 
 // 1 actual_date
 // Equal or Greater than {udf_datetimearrivedined_TA}
@@ -133,6 +178,16 @@ $$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be
 // Equal or Greater than {actual_date}
 $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date.');
 $$.setRequiredIfEntered('udf_datetimeofrequest_TA');
+
+setTimeout(function () {
+    var fieldName = 'udf_datetimeofrequest_TA';
+    $('#time_' + fieldName)
+        .change(function () {
+            if (() && ())
+                $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date.');
+            $$.setRequiredIfEntered('udf_datetimeofrequest_TA');
+        })
+}, 50);
 
 // 12 udf_datetimeofreadiness_TA
 // Equal or Greater than 11

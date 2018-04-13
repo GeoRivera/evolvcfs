@@ -9,8 +9,6 @@
         return Array.isArray(x) ? x : [x]
     }
 
-    const _isBlank = (fieldName) => (getFormElement(fieldName) === '');
-
     const _where = (qry) => {
         let res = qry.replace(/{{/g, "\\\'\\\'\' + {{")
             .replace(/}}/g, " + '\\\'\\\' {{")
@@ -29,6 +27,9 @@
 
 
     Global.$$ = {
+        isBlank: (fieldName) => (getFormElement(fieldName) === ''),
+
+        isBlankDt: (fieldName) => (isBlank(fieldName) && isBlank('time_' + fieldName)),
 
         hasActiveEnrollment: function (peopleId, programId) {
             const cond = eval(_where('program_info_id = {{programId}}'));
@@ -58,7 +59,7 @@
             })))
         },
 
-        setRequiredIfEntered: (fieldName) => $$.setRequired(fieldName, !_isBlank(fieldName)),
+        setRequiredIfEntered: (fieldName) => $$.setRequired(fieldName, !isBlank(fieldName)),
 
         setElement: (el, val) => {
             if (formElementExists(el)) {
