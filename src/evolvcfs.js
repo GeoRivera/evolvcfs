@@ -196,6 +196,7 @@
                 $$.hideErrMsg(dt1)
             }
         },
+
         dateIsBefore: (dt1, dt2, errMsg) => {
             if (!$$.dtComp(dt1, 'before', dt2)) {
                 $$.showErrMsg(dt1, errMsg);
