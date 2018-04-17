@@ -1,5 +1,21 @@
 (function (Global, document) {
-    const _fromNullable = (x) => (x === undefined || !x)
+    const _fromNullable = (x) => (x === undefined || !x);
+
+    const _exists = (x) => ((x !== undefined && x !== null) || !!x);
+
+    const _wasModified = (fieldName) => {
+        var oldValue = $('#' + fieldName).attr('old_value');
+        var currValue = $('#' + fieldName).attr('value');
+        (!_exists(oldValue)) && $('#' + fieldName).attr('old_value', '');
+        return (_exists(oldValue) && (oldValue !== currValue))
+    }
+
+    const _keepValue = (fieldName) => {
+        var currValue = $('#' + fieldName).attr('value');
+        $('#' + fieldName).attr('old_value', currValue);
+    }
+
+    const _valueChanged = (fieldName) => _wasModified(fieldName) && _fromNullable(_keepValue(fieldName));
 
     const _toDate = (x) => new Date(x);
 
@@ -20,13 +36,19 @@
 
     const _tryCatch = (fn) => {
         try {
-            fn()
+            return fn
         } catch (e) {}
     }
 
 
 
     Global.$$ = {
+        exists: _exists,
+        wasModified: _wasModified,
+        keepValue: _keepValue,
+        valueChanged: _valueChanged,
+
+
         isBlank: (fieldName) => (getFormElement(fieldName) === ''),
 
         isBlankDt: (fieldName) => (isBlank(fieldName) && isBlank('time_' + fieldName)),
@@ -46,9 +68,13 @@
                 val = (val) ? 'true' : 'false';
             }
             for (let i = 0; i < xs.length; i++) {
-                _tryCatch(getNodeFromXML(formXML, xs[i]).setAttribute(attr, val));
+                _tryCatch($$.getNodeFromXML(xs[i], formXML).setAttribute(attr, val));
             }
             refreshView(xs[0]);
+        },
+
+        getXMLAttribute: (fieldName, attr) => {
+            return _tryCatch($$.getNodeFromXML(fieldName, formXML).getAttribute(attr));
         },
 
         setRequired: (xs, bool) => {
@@ -63,7 +89,7 @@
 
         setElement: (el, val) => {
             if (formElementExists(el)) {
-                var xmlNode = getNodeFromXML(el, formXML);
+                var xmlNode = $$.getNodeFromXML(el, formXML);
                 var notModifiable = xmlNode.getAttribute('is_modifiable') === 'true' ? true : false;
                 var elObj = $('#' + el);
 
@@ -106,6 +132,32 @@
             IsDirty() && formState(obj.form, true);
         },
 
+        showErrMsg: (fieldName, errMsg) => {
+            var elObj = $('#' + fieldName)[0];
+            var cssErr = {
+                margin: '10px 0px',
+                padding: '6px',
+                float: 'left',
+                width: '50%',
+                color: '#D8000C',
+                backgroundColor: '#FFD2D2',
+                fontFamily: 'arial',
+                fontSize: '.8em',
+                verticalAlign: 'middle'
+            }
+
+            $(elObj)
+                .parent()
+                .parent()
+                .parent()
+                .prepend('<tr id="' + elObj.id + '_err_row"><td width="120"></td><td rowSpan="1" colSpan="1"><div id=' + elObj.id + '_err_msg >' + errMsg + '</div></td></tr>');
+            $('#' + elObj.id + '_err_msg').css(cssErr);
+        },
+
+        hideErrMsg: (fieldName) => {
+            $('#' + fieldName + '_err_row').remove();
+        },
+
         dtComp: (dt1, comp, dt2) => {
             dt1 = _dtFieldToDate(dt1);
             dt2 = _dtFieldToDate(dt2);
@@ -137,14 +189,16 @@
         },
 
         dateIsAfter: (dt1, dt2, errMsg) => {
-            if (!$$.dtComp(dt1, 'after', dt2)) {
-                alert(errMsg);
+            if (((!$$.isBlankDt(dt1)) || (_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2))) {
+                $$.showErrMsg(dt1, errMsg);
                 $$.setElement(dt1, '');
+            } else {
+                $$.hideErrMsg(dt1)
             }
         },
         dateIsBefore: (dt1, dt2, errMsg) => {
             if (!$$.dtComp(dt1, 'before', dt2)) {
-                alert(errMsg);
+                $$.showErrMsg(dt1, errMsg);
                 $$.setElement(dt1, '');
             }
         },
