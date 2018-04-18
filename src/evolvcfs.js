@@ -190,8 +190,7 @@
         },
 
         dateIsAfter: (dt1, dt2, errMsg) => {
-            // if (((!$$.isBlankDtTm(dt1)) || (_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2))) {
-            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2))) {
+            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2)) && (!$$.isBlankDtTm(dt1))) {
                 $$.hideErrMsg(dt1)
                 $$.showErrMsg(dt1, errMsg);
                 (!$$.isBlankDtTm(dt1)) && $$.setElement(dt1, '');
@@ -201,9 +200,12 @@
         },
 
         dateIsBefore: (dt1, dt2, errMsg) => {
-            if (!$$.dtComp(dt1, 'before', dt2)) {
+            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'before', dt2)) && (!$$.isBlankDtTm(dt1))) {
+                $$.hideErrMsg(dt1)
                 $$.showErrMsg(dt1, errMsg);
-                $$.setElement(dt1, '');
+                (!$$.isBlankDtTm(dt1)) && $$.setElement(dt1, '');
+            } else if (!$$.isBlankDtTm(dt1)) {
+                $$.hideErrMsg(dt1)
             }
         },
 
