@@ -5,13 +5,14 @@
 
     const _wasModified = (fieldName) => {
         var oldValue = $('#' + fieldName).attr('old_value');
-        var currValue = $('#' + fieldName).attr('value');
+        var currValue = $$.getElement(fieldName);
         (!_exists(oldValue)) && $('#' + fieldName).attr('old_value', '');
         return (_exists(oldValue) && (oldValue !== currValue))
     }
 
     const _keepValue = (fieldName) => {
-        var currValue = $('#' + fieldName).attr('value');
+        // var currValue = $('#' + fieldName).val();
+        var currValue = $$.getElement(fieldName);
         $('#' + fieldName).attr('old_value', currValue);
     }
 
@@ -51,7 +52,7 @@
 
         isBlank: (fieldName) => (getFormElement(fieldName) === ''),
 
-        isBlankDt: (fieldName) => (isBlank(fieldName) && isBlank('time_' + fieldName)),
+        isBlankDtTm: (fieldName) => (isBlank(fieldName) || isBlank('time_' + fieldName)),
 
         hasActiveEnrollment: function (peopleId, programId) {
             const cond = eval(_where('program_info_id = {{programId}}'));
@@ -189,10 +190,12 @@
         },
 
         dateIsAfter: (dt1, dt2, errMsg) => {
-            if (((!$$.isBlankDt(dt1)) || (_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2))) {
+            // if (((!$$.isBlankDtTm(dt1)) || (_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2))) {
+            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2))) {
+                $$.hideErrMsg(dt1)
                 $$.showErrMsg(dt1, errMsg);
-                $$.setElement(dt1, '');
-            } else {
+                (!$$.isBlankDtTm(dt1)) && $$.setElement(dt1, '');
+            } else if (!$$.isBlankDtTm(dt1)) {
                 $$.hideErrMsg(dt1)
             }
         },

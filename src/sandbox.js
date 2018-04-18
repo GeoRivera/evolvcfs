@@ -1,85 +1,16 @@
 // Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\PCI\VEN_8086&DEV_9D03&SUBSYS_073D1028&REV_21\3&11583659&0&B8\Device Parameters\Interrupt Management\MessageSignaledInterruptProperties
 
-(function () {
-    const _fromNullable = (x) => (x === undefined || !x)
-
-    const _toDate = (x) => new Date(x);
-
-    const _dtFieldToDate = (x) => Object.prototype.toString.call(x) === '[object String]' ? _toDate($$.getElement(x)) : x;
+$$.dateIsAfter('actual_date', 'amended_dt_tm', 'Actual Date must be after Amended Date.');
 
 
-    $$ = {
-        isBlank: (fieldName) => (getFormElement(fieldName) === ''),
+setTimeout(function () {
+    var fieldName = 'actual_date';
+    $('#time_' + fieldName)
+        .change(function () {
+            $$.dateIsAfter('actual_date', 'amended_dt_tm', 'Actual Date must be after Amended Date.');
+        })
+}, 50);
 
-        isBlankDt: (fieldName) => (isBlank(fieldName) && isBlank('time_' + fieldName)),
-
-        dtComp: (dt1, comp, dt2) => {
-            dt1 = _dtFieldToDate(dt1);
-            dt2 = _dtFieldToDate(dt2);
-            switch (comp) {
-                case '=':
-                    return dt1.toString() === dt2.toString()
-                case 'equal':
-                    return dt1.toString() === dt2.toString()
-                case '!=':
-                    return dt1.toString() !== dt2.toString()
-                case 'different':
-                    return dt1.toString() !== dt2.toString()
-                case '>':
-                    return dt1 > dt2
-                case 'after':
-                    return dt1 > dt2
-                case '>=':
-                    return dt1 >= dt2
-                case '<':
-                    return dt1 < dt2
-                case 'before':
-                    return dt1 < dt2
-                case '<=':
-                    return dt1 <= dt2
-
-                default:
-                    return false;
-            }
-        },
-
-        dateIsAfter: (dt1, dt2, errMsg) => {
-            if (!$$.dtComp(dt1, 'after', dt2)) {
-                alert(errMsg);
-                $$.setElement(dt1, '');
-            }
-        },
-        dateIsBefore: (dt1, dt2, errMsg) => {
-            if (!$$.dtComp(dt1, 'before', dt2)) {
-                alert(errMsg);
-                $$.setElement(dt1, '');
-            }
-        },
-
-
-        setRequiredIfEntered: () => true,
-
-        allDt: (arr) => {
-            let errMsg = '';
-            let passedAllChecks = arr.reduce((acc, xs) => {
-                let [dt1, comp, dt2, msg] = [...xs];
-                let chkCurrCondition = $$.dtComp(dt1, comp, dt2)
-                if (!chkCurrCondition) {
-                    errMsg += msg + '\n';
-                    // $$.setElement(dt1, '');
-                }
-                return acc && chkCurrCondition
-            }, true)
-
-            if (!passedAllChecks) {
-                alert(errMsg);
-            }
-        },
-
-
-    }
-    return $$
-}())
 
 var d1 = new Date("4/11/2018 9:00");
 var d2 = new Date("4/11/2018 20:00");
