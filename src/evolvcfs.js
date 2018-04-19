@@ -3,6 +3,8 @@
 
     const _exists = (x) => ((x !== undefined && x !== null) || !!x);
 
+    const _isDateTimeField = (fieldName) => ($('#' + fieldName).attr('type_code') === 'DT') || ($('#' + fieldName).attr('type_code') === 'D');
+
     const _wasModified = (fieldName) => {
         var oldValue = $('#' + fieldName).attr('old_value');
         var currValue = $$.getElement(fieldName);
@@ -80,18 +82,21 @@
             })))
         },
 
-        setRequiredIfEntered: (fieldName) => $$.setRequired(fieldName, !isBlank(fieldName)),
+        setRequiredIfEntered: (fieldName) => {
+            let fn = _isDateTimeField(fieldName) ? isBlankDtTm : isBlank;
+            $$.setRequired(fieldName, !fn(fieldName))
+        },
 
         setElement: (el, val) => {
             if (formElementExists(el)) {
                 var xmlNode = $$.getNodeFromXML(el, formXML);
                 var notModifiable = xmlNode.getAttribute('is_modifiable') === 'true' ? true : false;
-                var elObj = $('#' + el);
+                // var elObj = $('#' + el);
 
                 xmlNode.setAttribute('is_modifiable', 'true');
 
                 // Sets DateTime type fields appropriately
-                if ((elObj.attr('type_code') === 'DT') || (elObj.attr('type_code') === 'D')) {
+                if (_isDateTimeField(el)) {
                     var dtTime = val.split(/\s/i)
                     var date = dtTime[0];
                     var time = (dtTime[1] ? dtTime[1] : '') + (dtTime[2] ? dtTime[2] : '');
@@ -102,7 +107,7 @@
                     setFormElement(el, val);
                 }
 
-                notModifiable && elObj.attr('disabled', !notModifiable);
+                notModifiable && $('#' + el).attr('disabled', !notModifiable);
             }
         },
 
