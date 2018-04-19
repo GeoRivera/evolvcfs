@@ -44,12 +44,6 @@
 
 
     Global.$$ = {
-        exists: _exists,
-        wasModified: _wasModified,
-        keepValue: _keepValue,
-        valueChanged: _valueChanged,
-
-
         isBlank: (fieldName) => (getFormElement(fieldName) === ''),
 
         isBlankDtTm: (fieldName) => (isBlank(fieldName) || isBlank('time_' + fieldName)),
@@ -137,7 +131,7 @@
             var elObj = $('#' + fieldName)[0];
             var cssErr = {
                 margin: '10px 0px',
-                padding: '6px',
+                padding: '10px',
                 float: 'left',
                 width: '50%',
                 color: '#D8000C',
@@ -146,6 +140,8 @@
                 fontSize: '.8em',
                 verticalAlign: 'middle'
             }
+
+            errMsg = '❌ ' + errMsg;
 
             $(elObj)
                 .parent()
