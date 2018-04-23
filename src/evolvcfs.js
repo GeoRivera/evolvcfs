@@ -22,7 +22,9 @@
         Misc
     ---------------------------------------------------------------------------- */
     const _toDate = (x) => new Date(x);
+
     const _dtFieldToDate = (x) => Object.prototype.toString.call(x) === '[object String]' ? _toDate($$.getElement(x)) : x;
+
     /**
      * Allows the use Handlebars notation to encapsulate variable names for Evolv's DB like functions (getDataValue, setDataFromValue etc.).
      * @example eval( _where('program_info_id = {{programId}}') );
@@ -56,16 +58,13 @@
         } catch (e) {}
     }
 
-    const _isBlankDtOrTm = (fieldName) => (getFormElement(fieldName) === '' || getFormElement('time_' + fieldName) === '');
-    // const _hasValueDtOrTm = _not(_isBlankDtOrTm);
-
     const _isBlankDtTm = (fieldName) => (getFormElement(fieldName) === '' && getFormElement('time_' + fieldName) === '');
-    // const _hasValueDtTm = _not(_isBlankDtTm);
+
+    const _isBlankDtOrTm = (fieldName) => (getFormElement(fieldName) === '' || getFormElement('time_' + fieldName) === '');
+    const _hasDtOrTm = _not(_isBlankDtTm);
 
     const _isBlank = (fieldName) => _isDateTimeField(fieldName) ? _isBlankDtTm(fieldName) : (getFormElement(fieldName) === '');
-    const _hasValue = (fieldName) => _isDateTimeField(fieldName) ? _not(_isBlank) : _not(_isBlankDtOrTm);
-
-
+    const _hasValue = (fieldName) => _isDateTimeField(fieldName) ? _not(_isBlankDtOrTm)(fieldName) : _not(_isBlank)(fieldName);
 
 
     const _wasModified = (fieldName) => {
@@ -84,7 +83,9 @@
 
     const _keepValue = (fieldName) => {
         var currValue = $$.getElement(fieldName);
-        $('#' + fieldName).attr('old_value', currValue);
+        if (_hasValue(fieldName)) {
+            $('#' + fieldName).attr('old_value', currValue);
+        }
     }
 
     const _valueChanged = (fieldName) => _wasModified(fieldName) && _fromNullable(_keepValue(fieldName));
@@ -97,10 +98,6 @@
 
 
     Global.$$ = {
-        // isBlank: (fieldName) => (getFormElement(fieldName) === ''),
-
-        // isBlankDtTm: (fieldName) => (isBlank(fieldName) || isBlank('time_' + fieldName)),
-
         hasActiveEnrollment: function (peopleId, programId) {
             const cond = eval(_where('program_info_id = {{programId}}'));
             const has_enrollment = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'program_name', cond);
@@ -249,30 +246,16 @@
         },
 
         dateIsAfter: (dt1, dt2, errMsg) => {
-            if (_valueChanged(dt1) && _hasValue(dt1)) {
-
-                if (!$$.dtComp(dt1, 'after', dt2)) {
-                    $$.showErrMsg(dt1, errMsg);
-                    $$.setElement(dt1, '');
-                } else {
-                    $$.hideErrMsg(dt1)
-                }
+            if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && !_isBlankDtTm(dt1)) {
+                $$.showErrMsg(dt1, errMsg);
+                (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
+            } else if (!_isBlankDtTm(dt1)) {
+                $$.hideErrMsg(dt1)
             }
         },
 
-        // dateIsAfter: (dt1, dt2, errMsg) => {
-        //     if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2)) && (!_isBlankDtTm(dt1))) {
-        //         $$.hideErrMsg(dt1)
-        //         $$.showErrMsg(dt1, errMsg);
-        //         (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
-        //     } else if (!_isBlankDtTm(dt1)) {
-        //         $$.hideErrMsg(dt1)
-        //     }
-        // },
-
         dateIsBefore: (dt1, dt2, errMsg) => {
-            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'before', dt2)) && (!_isBlankDtTm(dt1))) {
-                $$.hideErrMsg(dt1)
+            if (_valueChanged(dt1) && !$$.dtComp(dt1, 'before', dt2) && !_isBlankDtTm(dt1)) {
                 $$.showErrMsg(dt1, errMsg);
                 (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
             } else if (!_isBlankDtTm(dt1)) {
