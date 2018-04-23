@@ -1,4 +1,9 @@
 (function (Global, document) {
+    /* ----------------------------------------------------------------------------
+         General utils
+    ---------------------------------------------------------------------------- */
+    const _curry = (fn, arr = []) => (...args) => (a => a.length === fn.length ? fn(...a) : _curry(fn, a))([...arr, ...args]);
+
     const _compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
 
     const _pipe = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)));
@@ -11,36 +16,20 @@
 
     const _any = (...args) => args.reduce((acc, curr) => !!(acc || curr), false);
 
+    const _box = (x) => Array.isArray(x) ? x : [x];
 
-    const _fromNullable = (x) => (x === undefined || !x);
-
-    const _exists = (x) => ((x !== undefined && x !== null) || !!x);
-
-    const _isDateTimeField = (fieldName) => ($('#' + fieldName).attr('type_code') === 'DT') || ($('#' + fieldName).attr('type_code') === 'D');
-
-    const _wasModified = (fieldName) => {
-        var oldValue = $('#' + fieldName).attr('old_value');
-        var currValue = $$.getElement(fieldName);
-        (!_exists(oldValue)) && $('#' + fieldName).attr('old_value', '');
-        return (_exists(oldValue) && (oldValue !== currValue))
-    }
-
-    const _keepValue = (fieldName) => {
-        // var currValue = $('#' + fieldName).val();
-        var currValue = $$.getElement(fieldName);
-        $('#' + fieldName).attr('old_value', currValue);
-    }
-
-    const _valueChanged = (fieldName) => _wasModified(fieldName) && _fromNullable(_keepValue(fieldName));
-
+    /* ----------------------------------------------------------------------------
+        Misc
+    ---------------------------------------------------------------------------- */
     const _toDate = (x) => new Date(x);
-
     const _dtFieldToDate = (x) => Object.prototype.toString.call(x) === '[object String]' ? _toDate($$.getElement(x)) : x;
-
-    const _box = (x) => {
-        return Array.isArray(x) ? x : [x]
-    }
-
+    /**
+     * Allows the use Handlebars notation to encapsulate variable names for Evolv's DB like functions (getDataValue, setDataFromValue etc.).
+     * @example eval( _where('program_info_id = {{programId}}') );
+     *
+     * @param {any} qry
+     * @returns {string}
+     */
     const _where = (qry) => {
         let res = qry.replace(/{{/g, "\\\'\\\'\' + {{")
             .replace(/}}/g, " + '\\\'\\\' {{")
@@ -49,19 +38,68 @@
             .split('{{');
         return "\'" + res.reduce((acc, val) => acc + val, '') + "\'";
     }
+    /* ----------------------------------------------------------------------------
+        Validation
+    ---------------------------------------------------------------------------- */
+    const _exists = (x) => ((x !== undefined && x !== null) || !!x);
 
+    const _fromNullable = (x) => (x === undefined || !x);
+
+    const _isDateTimeField = (fieldName) => ($('#' + fieldName).attr('type_code') === 'DT') || ($('#' + fieldName).attr('type_code') === 'D');
+
+
+
+    // TODO - Replace with Left/Right/Either
     const _tryCatch = (fn) => {
         try {
             return fn
         } catch (e) {}
     }
 
+    const _isBlankDtOrTm = (fieldName) => (getFormElement(fieldName) === '' || getFormElement('time_' + fieldName) === '');
+    // const _hasValueDtOrTm = _not(_isBlankDtOrTm);
+
+    const _isBlankDtTm = (fieldName) => (getFormElement(fieldName) === '' && getFormElement('time_' + fieldName) === '');
+    // const _hasValueDtTm = _not(_isBlankDtTm);
+
+    const _isBlank = (fieldName) => _isDateTimeField(fieldName) ? _isBlankDtTm(fieldName) : (getFormElement(fieldName) === '');
+    const _hasValue = (fieldName) => _isDateTimeField(fieldName) ? _not(_isBlank) : _not(_isBlankDtOrTm);
+
+
+
+
+    const _wasModified = (fieldName) => {
+        var oldValue = $('#' + fieldName).attr('old_value');
+        var currValue = $$.getElement(fieldName);
+
+        if (!_exists(oldValue)) {
+            $('#' + fieldName).attr('old_value', '');
+        }
+
+        if (_hasValue(fieldName)) {
+            return (_exists(oldValue) && (oldValue !== currValue))
+        }
+        return false
+    }
+
+    const _keepValue = (fieldName) => {
+        var currValue = $$.getElement(fieldName);
+        $('#' + fieldName).attr('old_value', currValue);
+    }
+
+    const _valueChanged = (fieldName) => _wasModified(fieldName) && _fromNullable(_keepValue(fieldName));
+
+
+
+
+
+
 
 
     Global.$$ = {
-        isBlank: (fieldName) => (getFormElement(fieldName) === ''),
+        // isBlank: (fieldName) => (getFormElement(fieldName) === ''),
 
-        isBlankDtTm: (fieldName) => (isBlank(fieldName) || isBlank('time_' + fieldName)),
+        // isBlankDtTm: (fieldName) => (isBlank(fieldName) || isBlank('time_' + fieldName)),
 
         hasActiveEnrollment: function (peopleId, programId) {
             const cond = eval(_where('program_info_id = {{programId}}'));
@@ -96,8 +134,14 @@
         },
 
         setRequiredIfEntered: (fieldName) => {
-            let fn = _isDateTimeField(fieldName) ? isBlankDtTm : isBlank;
-            $$.setRequired(fieldName, !fn(fieldName))
+            // let fn = _isDateTimeField(fieldName) ? isBlankDtTm : isBlank;
+            // $$.setRequired(fieldName, !fn(fieldName))
+            $$.setRequired(fieldName, !_isBlank(fieldName));
+            if (_isDateTimeField(fieldName)) {
+                $('#time_' + fieldName)
+                    .prev()
+                    .attr('style', $('#caption_' + fieldName).attr('style'))
+            }
         },
 
         setElement: (el, val) => {
@@ -158,6 +202,7 @@
                 fontSize: '.8em',
                 verticalAlign: 'middle'
             }
+            $$.hideErrMsg(fieldName)
 
             errMsg = '❌ ' + errMsg;
 
@@ -203,22 +248,34 @@
             }
         },
 
+        // dateIsAfter: (dt1, dt2, errMsg) => {
+        //     if (_valueChanged(dt1) && _hasValue(dt1)) {
+        //         if (!$$.dtComp(dt1, 'after', dt2)) {
+        //             $$.showErrMsg(dt1, errMsg);
+        //             $$.setElement(dt1, '');
+        //         } else {
+        //             $$.hideErrMsg(dt1)
+        //         }
+        //     }
+
+        // },
+
         dateIsAfter: (dt1, dt2, errMsg) => {
-            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2)) && (!$$.isBlankDtTm(dt1))) {
+            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'after', dt2)) && (!_isBlankDtTm(dt1))) {
                 $$.hideErrMsg(dt1)
                 $$.showErrMsg(dt1, errMsg);
-                (!$$.isBlankDtTm(dt1)) && $$.setElement(dt1, '');
-            } else if (!$$.isBlankDtTm(dt1)) {
+                (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
+            } else if (!_isBlankDtTm(dt1)) {
                 $$.hideErrMsg(dt1)
             }
         },
 
         dateIsBefore: (dt1, dt2, errMsg) => {
-            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'before', dt2)) && (!$$.isBlankDtTm(dt1))) {
+            if (((_valueChanged(dt1))) && (!$$.dtComp(dt1, 'before', dt2)) && (!_isBlankDtTm(dt1))) {
                 $$.hideErrMsg(dt1)
                 $$.showErrMsg(dt1, errMsg);
-                (!$$.isBlankDtTm(dt1)) && $$.setElement(dt1, '');
-            } else if (!$$.isBlankDtTm(dt1)) {
+                (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
+            } else if (!_isBlankDtTm(dt1)) {
                 $$.hideErrMsg(dt1)
             }
         },
