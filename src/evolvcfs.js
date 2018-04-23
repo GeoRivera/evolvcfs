@@ -245,11 +245,20 @@
             }
         },
 
+        // dateIsAfter: (dt1, dt2, errMsg) => {
+        //     if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && !_isBlankDtTm(dt1)) {
+        //         $$.showErrMsg(dt1, errMsg);
+        //         (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
+        //     } else if (!_isBlankDtTm(dt1)) {
+        //         $$.hideErrMsg(dt1)
+        //     }
+        // },
+
         dateIsAfter: (dt1, dt2, errMsg) => {
-            if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && !_isBlankDtTm(dt1)) {
+            if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && _hasValue(dt1)) {
                 $$.showErrMsg(dt1, errMsg);
-                (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
-            } else if (!_isBlankDtTm(dt1)) {
+                (_hasValue(dt1)) && $$.setElement(dt1, '');
+            } else if (_hasValue(dt1)) {
                 $$.hideErrMsg(dt1)
             }
         },
