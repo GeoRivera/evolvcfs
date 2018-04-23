@@ -1,4 +1,17 @@
 (function (Global, document) {
+    const _compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)));
+
+    const _pipe = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)));
+
+    const _not = (fn) => (...args) => !fn(...args);
+
+    const _flip = (fn) => (...args) => fn(...args.reverse());
+
+    const _all = (...args) => args.reduce((acc, curr) => !!(acc && curr), true);
+
+    const _any = (...args) => args.reduce((acc, curr) => !!(acc || curr), false);
+
+
     const _fromNullable = (x) => (x === undefined || !x);
 
     const _exists = (x) => ((x !== undefined && x !== null) || !!x);
