@@ -306,9 +306,34 @@
                 alert(errMsg);
                 $$.setElement(dt1, '');
             }
+        },
+
+        eraseOnDisable: (currEl, eraseList) => {
+            eraseList = _box(eraseList);
+            eraseList.map(el => {
+                // let disableRule = $$.getXMLAttribute(el, 'disable_rule_code');
+                // if (eval(disableRule)) {
+                if (eval($$.getXMLAttribute(el, 'disable_rule_code'))) {
+                    setFormElement(el, '');
+                    $('#' + el + '_prompt').val('')
+                }
+            });
         }
 
     };
 
     return $$
-})(window.parent, document)
+})(window.parent, document);
+
+
+function eraseIfNotValue(currElement, eraseList, value = '977497DC-9725-4DBC-9188-2AF053242399') {
+
+    eraseList = Array.isArray(eraseList) ? eraseList : [eraseList];
+
+    if (!(getFormElement(currElement) === value)) {
+        for (var i = 0; i < eraseList.length; i++) {
+            setFormElement(eraseList[i], '');
+            $('#' + eraseList[i] + '_prompt').val('')
+        }
+    }
+}
