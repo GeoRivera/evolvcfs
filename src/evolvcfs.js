@@ -90,15 +90,16 @@
 
     const _valueChanged = (fieldName) => _wasModified(fieldName) && _fromNullable(_keepValue(fieldName));
 
-
-
+    /* ----------------------------------------------------------------------------
+        Interfaces
+    ---------------------------------------------------------------------------- */
 
 
 
 
 
     Global.$$ = {
-        hasActiveEnrollment: function (peopleId, programId) {
+        hasActiveEnrollment: (peopleId, programId) => {
             const cond = eval(_where('program_info_id = {{programId}}'));
             const has_enrollment = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'program_name', cond);
             const end_date = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'end_date', cond);
@@ -131,8 +132,6 @@
         },
 
         setRequiredIfEntered: (fieldName) => {
-            // let fn = _isDateTimeField(fieldName) ? isBlankDtTm : isBlank;
-            // $$.setRequired(fieldName, !fn(fieldName))
             $$.setRequired(fieldName, !_isBlank(fieldName));
             if (_isDateTimeField(fieldName)) {
                 $('#time_' + fieldName)
@@ -145,7 +144,6 @@
             if (formElementExists(el)) {
                 var xmlNode = $$.getNodeFromXML(el, formXML);
                 var notModifiable = xmlNode.getAttribute('is_modifiable') === 'true' ? true : false;
-                // var elObj = $('#' + el);
 
                 xmlNode.setAttribute('is_modifiable', 'true');
 
@@ -154,11 +152,11 @@
                     var dtTime = val.split(/\s/i)
                     var date = dtTime[0];
                     var time = (dtTime[1] ? dtTime[1] : '') + (dtTime[2] ? dtTime[2] : '');
-                    setFormElement(el, date);
-                    setFormElement('time_' + el, time);
+                    _tryCatch(setFormElement(el, date));
+                    _tryCatch(setFormElement('time_' + el, time));
                     notModifiable && $('#time_' + el).attr('disabled', !notModifiable);
                 } else {
-                    setFormElement(el, val);
+                    _tryCatch(setFormElement(el, val));
                 }
 
                 notModifiable && $('#' + el).attr('disabled', !notModifiable);
@@ -245,15 +243,6 @@
             }
         },
 
-        // dateIsAfter: (dt1, dt2, errMsg) => {
-        //     if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && !_isBlankDtTm(dt1)) {
-        //         $$.showErrMsg(dt1, errMsg);
-        //         (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
-        //     } else if (!_isBlankDtTm(dt1)) {
-        //         $$.hideErrMsg(dt1)
-        //     }
-        // },
-
         dateIsAfter: (dt1, dt2, errMsg) => {
             if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && _hasValue(dt1)) {
                 $$.showErrMsg(dt1, errMsg);
@@ -289,14 +278,6 @@
             }
         },
 
-        // valiDate: (msg, ...args) => {
-        //     const [, , dt2] = [...args]
-        //     if ($$.dtComp(...args)) {
-        //         alert(msg);
-        //         $$.setElement(dt2, '');
-        //     }
-        // },
-
         isAtMostHoursAfter: (dt1, hours, dt2, errMsg) => {
             dt1 = _dtFieldToDate(dt1);
             dt2 = _dtFieldToDate(dt2);
@@ -310,30 +291,17 @@
 
         eraseOnDisable: (currEl, eraseList) => {
             eraseList = _box(eraseList);
-            eraseList.map(el => {
-                // let disableRule = $$.getXMLAttribute(el, 'disable_rule_code');
-                // if (eval(disableRule)) {
-                if (eval($$.getXMLAttribute(el, 'disable_rule_code'))) {
-                    setFormElement(el, '');
-                    $('#' + el + '_prompt').val('')
-                }
-            });
+            setTimeout((eraseList) => {
+                eraseList.map(el => {
+                    if (eval($$.getXMLAttribute(el, 'disable_rule_code'))) {
+                        _tryCatch(setFormElement(el, ''));
+                        $('#' + el + '_prompt').val('')
+                    }
+                });
+            }, 50);
         }
 
     };
 
     return $$
 })(window.parent, document);
-
-
-function eraseIfNotValue(currElement, eraseList, value = '977497DC-9725-4DBC-9188-2AF053242399') {
-
-    eraseList = Array.isArray(eraseList) ? eraseList : [eraseList];
-
-    if (!(getFormElement(currElement) === value)) {
-        for (var i = 0; i < eraseList.length; i++) {
-            setFormElement(eraseList[i], '');
-            $('#' + eraseList[i] + '_prompt').val('')
-        }
-    }
-}

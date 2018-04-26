@@ -37,7 +37,65 @@ $$.eraseOnDisable('udf_wasicccontacted_TA', ['udf_safetypanreviewed_TA', 'udf_wa
 
 // Was ESP Peer or FP...
 // [onchange]
-$$.eraseOnDisable('udf_familypartnerintervention_TA', 'udf_whointitiatedfampartinter_TA');
+$$.eraseOnDisable('udf_familypartnerintervention_TA', ['udf_whointitiatedfampartinter_TA', 'udf_badirectunits_TA', 'udf_bacollateralunits_TA']);
+
+
+// *** Group 4
+// Primary Language
+// [onchange]
+$$.eraseOnDisable('udf_primarylanguage_TA', 'udf_otherlanguage_TA');
+
+
+// *** Group 5
+// Intervention Location
+// [onchange]
+$$.eraseOnDisable('udf_interventionlocation_TA', 'udf_nameofed_TA');
+
+// Who Directeed to ED (from Eval)
+// [onchange]
+$$.eraseOnDisable('udf_whodirectedtoed_TA', 'udf_directedbysection12_TA');
+
+
+// *** Group 6
+// Is there any known State involvment
+// + IF {yes}
+// + THEN at least 1 of(DMH, DYS, DDS, DCF) has to be equal to { yes }
+// + ELSE set (DMH, DYS, DDS, DCF) to {no}
+
+
+// *** Group 7
+// Primary Funding Source
+// [onchange]
+$$.eraseOnDisable('udf_primaryfundingsource_TA', ['udf_commercialinsname_TA', 'udf_benefitrequeststatus_TA']);
+
+
+// *** Group 9
+// Medical Clearance Requested
+// [onchange]
+$$.eraseOnDisable('udf_medclearancerequeted_TA', 'udf_whorequestedmedclear_TA');
+
+// Was Medical Clearance Provided
+// [onchange]
+$$.eraseOnDisable('udf_medicalclearanceprovided_TA', 'udf_whoprovidedmedclearance_TA');
+
+
+// *** Group 10
+// Final Disposition
+// [onchange]
+$$.eraseOnDisable('udf_finaldisposition_TA', 'udf_inpatientdispo_TA');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
