@@ -58,12 +58,12 @@
         } catch (e) {}
     }
 
-    const _isBlankDtTm = (fieldName) => (getFormElement(fieldName) === '' && getFormElement('time_' + fieldName) === '');
+    const _isBlankDtTm = (fieldName) => (_getFormElement(fieldName) === '' && _getFormElement('time_' + fieldName) === '');
 
-    const _isBlankDtOrTm = (fieldName) => (getFormElement(fieldName) === '' || getFormElement('time_' + fieldName) === '');
+    const _isBlankDtOrTm = (fieldName) => (_getFormElement(fieldName) === '' || _getFormElement('time_' + fieldName) === '');
     const _hasDtOrTm = _not(_isBlankDtTm);
 
-    const _isBlank = (fieldName) => _isDateTimeField(fieldName) ? _isBlankDtTm(fieldName) : (getFormElement(fieldName) === '');
+    const _isBlank = (fieldName) => _isDateTimeField(fieldName) ? _isBlankDtTm(fieldName) : (_getFormElement(fieldName) === '');
     const _hasValue = (fieldName) => _isDateTimeField(fieldName) ? _not(_isBlankDtOrTm)(fieldName) : _not(_isBlank)(fieldName);
 
 
@@ -101,8 +101,8 @@
     Global.$$ = {
         hasActiveEnrollment: (peopleId, programId) => {
             const cond = eval(_where('program_info_id = {{programId}}'));
-            const has_enrollment = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'program_name', cond);
-            const end_date = getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'end_date', cond);
+            const has_enrollment = _getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'program_name', cond);
+            const end_date = _getDataValue('current_program_enrollment_view', 'people_id', peopleId, 'end_date', cond);
 
             return (has_enrollment && !end_date);
         },
@@ -141,7 +141,7 @@
         },
 
         setElement: (el, val) => {
-            if (formElementExists(el)) {
+            if (_formElementExists(el)) {
                 var xmlNode = $$.getNodeFromXML(el, formXML);
                 var notModifiable = xmlNode.getAttribute('is_modifiable') === 'true' ? true : false;
 
@@ -152,20 +152,20 @@
                     var dtTime = val.split(/\s/i)
                     var date = dtTime[0];
                     var time = (dtTime[1] ? dtTime[1] : '') + (dtTime[2] ? dtTime[2] : '');
-                    _tryCatch(setFormElement(el, date));
-                    _tryCatch(setFormElement('time_' + el, time));
+                    _tryCatch(_setFormElement(el, date));
+                    _tryCatch(_setFormElement('time_' + el, time));
                     notModifiable && $('#time_' + el).attr('disabled', !notModifiable);
                 } else {
-                    _tryCatch(setFormElement(el, val));
+                    _tryCatch(_setFormElement(el, val));
                 }
 
                 notModifiable && $('#' + el).attr('disabled', !notModifiable);
             }
         },
 
-        getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
+        getElement: (el, src) => _fromNullable(src) ? _getElementFromXML(formXML, el) : _getFormElement(el),
 
-        getClientAge: (peopleId) => getDataValue('client_personal_view', 'people_id', peopleId, 'age'),
+        getClientAge: (peopleId) => _getDataValue('client_personal_view', 'people_id', peopleId, 'age'),
 
         getNodeFromXML: (el, obj) => {
             obj = (_fromNullable(obj)) ? formXML : obj;
@@ -291,14 +291,12 @@
 
         eraseOnDisable: (currEl, eraseList) => {
             eraseList = _box(eraseList);
-            setTimeout((eraseList) => {
-                eraseList.map(el => {
-                    if (eval($$.getXMLAttribute(el, 'disable_rule_code'))) {
-                        _tryCatch(setFormElement(el, ''));
-                        $('#' + el + '_prompt').val('')
-                    }
-                });
-            }, 50);
+            eraseList.map(el => {
+                if (_tryCatch(eval($$.getXMLAttribute(el, 'disable_rule_code')))) {
+                    _tryCatch(_setFormElement(el, ''));
+                    $('#' + el + '_prompt').val('')
+                }
+            });
         }
 
     };

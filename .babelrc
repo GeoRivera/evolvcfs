@@ -12,8 +12,10 @@
                 "mangle": {
                     "exclude": ["hasActiveEnrollment"]
                 },
-                "simplifyComparisons": false
+                "simplifyComparisons": true
             }
         ]
+
     ]
+    // "plugins": ["minify-mangle-names"]
 }

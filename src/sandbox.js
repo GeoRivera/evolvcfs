@@ -125,6 +125,7 @@ setTimeout(function () {
 // Equal or Greater than {actual_date}
 $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date');
 $$.setRequiredIfEntered('udf_datetimeofrequest_TA');
+
 setTimeout(function () {
     var fieldName = 'actual_date';
     $('#time_' + fieldName)
