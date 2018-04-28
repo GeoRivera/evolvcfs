@@ -2,12 +2,13 @@
     /* ----------------------------------------------------------------------------
          Evolv's formfunction.js mapping
     ---------------------------------------------------------------------------- */
-    const _getFormElement = getFormElement;
-    const _getElementFromXML = getElementFromXML;
-    const _getDataValue = getDataValue;
-    const _transformXML = transformXML;
-    const _IsDirty = IsDirty;
-    const _formState = formState;
+    var _getFormElement = getFormElement;
+    var _getElementFromXML = getElementFromXML;
+    var _getDataValue = getDataValue;
+    var _transformXML = transformXML;
+    var _IsDirty = IsDirty;
+    var _formState = formState;
+    var _setFormElement = setFormElement;
 
     /* ----------------------------------------------------------------------------
          General utils
