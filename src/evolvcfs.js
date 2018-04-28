@@ -1,5 +1,15 @@
 (function (Global, document) {
     /* ----------------------------------------------------------------------------
+         Evolv's formfunction.js mapping
+    ---------------------------------------------------------------------------- */
+    const _getFormElement = getFormElement;
+    const _getElementFromXML = getElementFromXML;
+    const _getDataValue = getDataValue;
+    const _transformXML = transformXML;
+    const _IsDirty = IsDirty;
+    const _formState = formState;
+
+    /* ----------------------------------------------------------------------------
          General utils
     ---------------------------------------------------------------------------- */
     const _curry = (fn, arr = []) => (...args) => (a => a.length === fn.length ? fn(...a) : _curry(fn, a))([...arr, ...args]);
@@ -180,8 +190,8 @@
         },
 
         refreshView: (obj) => {
-            xslTarget.innerHTML = transformXML(formXSL.XMLDocument.xml, formXML.xml);
-            IsDirty() && formState(obj.form, true);
+            xslTarget.innerHTML = _transformXML(formXSL.XMLDocument.xml, formXML.xml);
+            _IsDirty() && _formState(obj.form, true);
         },
 
         showErrMsg: (fieldName, errMsg) => {

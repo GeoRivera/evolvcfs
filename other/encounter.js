@@ -5,6 +5,7 @@
     var _getElementFromXML = getElementFromXML;
     var _formElementExists = formElementExists;
     var _getFormElementDOM = getFormElementDOM;
+    var _formState = formState;
     var loadEvalData = 'load_std_form_data';
     _tryCatch(_setFormElement(loadEvalData, 'updating...'));
 
@@ -63,6 +64,7 @@
 
 
 
+
     function getClientAge() {
         return _getDataValue('client_personal_view ', 'people_id', _getElementFromXML(formXML, 'people_id'), 'age');
     }
@@ -70,6 +72,7 @@
     function hideFormField(fieldName) {
         _getFormElementDOM(fieldName).style.display = 'none';
         _getFormElementDOM('caption_' + fieldName).style.display = 'none';
+        _formState(formXML, false)
     }
 
     function setCurrentDateTime(fieldName) {
