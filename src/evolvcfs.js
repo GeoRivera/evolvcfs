@@ -314,3 +314,12 @@
 
     return $$
 })(window.parent, document);
+
+function getFormElement(elementName) {
+    var elementObj = document.getElementById(elementName);
+    if (elementObj != null) {
+        return elementObj.value.replace(/[{}]/g, '');
+    } else {
+        return null;
+    }
+}
