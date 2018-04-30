@@ -308,18 +308,20 @@
                     $('#' + el + '_prompt').val('')
                 }
             });
-        }
+        },
+
+        getFormElement: (el) => (getFormElement(el)).replace(/[{}]/g, '')
 
     };
 
     return $$
 })(window.parent, document);
 
-function getFormElement(elementName) {
-    var elementObj = document.getElementById(elementName);
-    if (elementObj != null) {
-        return elementObj.value.replace(/[{}]/g, '');
-    } else {
-        return null;
-    }
-}
+// function getFormElement(elementName) {
+//     var elementObj = document.getElementById(elementName);
+//     if (elementObj != null) {
+//         return elementObj.value.replace(/[{}]/g, '');
+//     } else {
+//         return null;
+//     }
+// }
