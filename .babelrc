@@ -10,7 +10,9 @@
         ["minify",
             {
                 "mangle": {
-                    "exclude": ["hasActiveEnrollment"]
+                    "exclude": {
+                        "hasActiveEnrollment": true
+                    }
                 },
                 "simplifyComparisons": true
             }

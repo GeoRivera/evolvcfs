@@ -2,13 +2,15 @@
     /* ----------------------------------------------------------------------------
          Evolv's formfunction.js mapping
     ---------------------------------------------------------------------------- */
-    var _getFormElement = getFormElement;
-    var _getElementFromXML = getElementFromXML;
-    var _getDataValue = getDataValue;
-    var _transformXML = transformXML;
-    var _IsDirty = IsDirty;
-    var _formState = formState;
-    var _setFormElement = setFormElement;
+    var _getFormElement = _tryCatch(getFormElement);
+    var _getElementFromXML = _tryCatch(getElementFromXML);
+    var _getDataValue = _tryCatch(getDataValue);
+    var _transformXML = _tryCatch(transformXML);
+    var _IsDirty = _tryCatch(IsDirty);
+    var _formState = _tryCatch(formState);
+    var _setFormElement = _tryCatch(setFormElement);
+    var _formElementExists = _tryCatch(formElementExists);
+
 
     /* ----------------------------------------------------------------------------
          General utils
