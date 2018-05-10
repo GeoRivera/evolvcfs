@@ -79,19 +79,19 @@
     const _isBlank = (fieldName) => _isDateTimeField(fieldName) ? _isBlankDtTm(fieldName) : (getFormElement(fieldName) === '');
     const _hasValue = (fieldName) => _isDateTimeField(fieldName) ? _not(_isBlankDtOrTm)(fieldName) : _not(_isBlank)(fieldName);
 
-    const _getCurrValue = (fieldName) => {
-        var currValue = $$.getElement(fieldName);
+    // const _getCurrValue = (fieldName) => {
+    //     var currValue = $$.getElement(fieldName);
 
-        if (_isDateTimeField(fieldName) && currValue.length <= 16) { // If datetime is incomplete, builds datetime from date and time fields
-            currValue = $('#' + fieldName).val() + ' ' + $('#time_' + fieldName).val()
-        }
+    //     if (_isDateTimeField(fieldName) && currValue.length <= 16) { // If datetime is incomplete, builds datetime from date and time fields
+    //         currValue = $('#' + fieldName).val() + ' ' + $('#time_' + fieldName).val()
+    //     }
 
-        return currValue
-    }
+    //     return currValue
+    // }
 
     const _wasModified = (fieldName) => {
         var oldValue = $('#' + fieldName).attr('old_value');
-        var currValue = _getCurrValue(fieldName);
+        var currValue = $$.getElement(fieldName);
 
         if (!_exists(oldValue)) {
             $('#' + fieldName).attr('old_value', '');
@@ -104,7 +104,7 @@
     }
 
     const _keepValue = (fieldName) => {
-        var currValue = _getCurrValue(fieldName);
+        var currValue = $$.getElement(fieldName);
         if (_hasValue(fieldName)) {
             $('#' + fieldName).attr('old_value', currValue);
         }
@@ -185,7 +185,17 @@
             }
         },
 
-        getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
+        // getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
+        getElement: (el, src) => {
+            var res = _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el);
+
+            if (_isDateTimeField(el) && res.length <= 16) { // If datetime is incomplete, builds datetime from date and time fields
+                res = $('#' + el).val() + ' ' + $('#time_' + el).val()
+            }
+
+            return res
+        },
+
 
         getClientAge: (peopleId) => getDataValue('client_personal_view', 'people_id', peopleId, 'age'),
 
