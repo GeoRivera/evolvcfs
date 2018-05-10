@@ -1,23 +1,23 @@
 {
-    "presets": [
-        ["env",
-            {
-                "targets": {
-                    "ie": 6
-                }
-            }
-        ],
-        ["minify",
-            {
-                "mangle": {
-                    "exclude": {
-                        "hasActiveEnrollment": true
+    "presets": ["es2015"],
+    "env": {
+        "dev": {
+            "plugins": ["es3-member-expression-literals", "es3-property-literals"]
+        },
+        "prod": {
+            "presets": [
+                ["minify",
+                    {
+                        "mangle": {
+                            "exclude": {
+                                "hasActiveEnrollment": true
+                            }
+                        },
+                        "simplifyComparisons": true
                     }
-                },
-                "simplifyComparisons": true
-            }
-        ]
-
-    ]
-    // "plugins": ["minify-mangle-names"]
+                ]
+            ],
+            "plugins": ["es3-member-expression-literals", "es3-property-literals"]
+        }
+    }
 }

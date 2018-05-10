@@ -257,7 +257,7 @@
         },
 
         dateIsAfter: (dt1, dt2, errMsg) => {
-            if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && _hasValue(dt1)) {
+            if (_hasValue(dt1) && _valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2)) {
                 $$.showErrMsg(dt1, errMsg);
                 (_hasValue(dt1)) && $$.setElement(dt1, '');
             } else if (_hasValue(dt1) && $$.dtComp(dt1, 'after', dt2)) {
@@ -266,7 +266,7 @@
         },
 
         dateIsBefore: (dt1, dt2, errMsg) => {
-            if (_valueChanged(dt1) && !$$.dtComp(dt1, 'before', dt2) && !_isBlankDtTm(dt1)) {
+            if (_hasValue(dt1) && _valueChanged(dt1) && !$$.dtComp(dt1, 'before', dt2)) {
                 $$.showErrMsg(dt1, errMsg);
                 (!_isBlankDtTm(dt1)) && $$.setElement(dt1, '');
             } else if (!_isBlankDtTm(dt1)) {
