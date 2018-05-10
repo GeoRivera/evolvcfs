@@ -2,7 +2,7 @@
   "name": "evolvcfs",
   "version": "1.0.0",
   "description": "This is a \"first stab\" at develping a helper function library for developing Evolv-CS Forms.",
-  "main": "libcfs.js",
+  "private": true,
   "dependencies": {
     "babel": "^6.23.0",
     "jquery": "^3.3.1",
@@ -17,12 +17,15 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.3.0",
     "babel-register": "^6.26.0",
+    "es5-shim": "^4.5.10",
     "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1"
+    "eslint-config-google": "^0.9.1",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "del-cli lib/*.min.js && babel src -d lib",
+    "build": "del-cli lib/*.min.js && babel src -d lib && rname -r \"(?<fname>[a-zA-Z_]*).*\" lib/*.js \"{{fname}}.min.js\"",
     "build_z": "del-cli lib/*.min.js && babel src -d lib && rname -r \"(?<fname>[a-zA-Z_]*).*\" lib/*.js \"{{fname}}.min.js\"",
     "forms": "del-cli forms_min/*.min.js && babel forms -d forms_min && rname -r \"(?<fname>[a-zA-Z_]*).*\" forms_min/*.js \"{{fname}}.min.js\"",
     "other": "del-cli misc_min/*.min.js && babel misc -d misc_min && rname -r \"(?<fname>[a-zA-Z_]*).*\" misc_min/*.js \"{{fname}}.min.js\"",

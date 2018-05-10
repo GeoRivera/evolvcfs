@@ -260,7 +260,7 @@
             if (_valueChanged(dt1) && !$$.dtComp(dt1, 'after', dt2) && _hasValue(dt1)) {
                 $$.showErrMsg(dt1, errMsg);
                 (_hasValue(dt1)) && $$.setElement(dt1, '');
-            } else if (_hasValue(dt1)) {
+            } else if (_hasValue(dt1) && $$.dtComp(dt1, 'after', dt2)) {
                 $$.hideErrMsg(dt1)
             }
         },
@@ -278,7 +278,8 @@
             let errMsg = '';
             let passedAllChecks = arr.reduce((acc, xs) => {
                 let [dt1, comp, dt2, msg] = [...xs];
-                let chkCurrCondition = $$.dtComp(dt1, comp, dt2)
+                let chkCurrCondition = $$.dtComp(dt1, comp, dt2);
+                console.log(dt1, ' ', comp, ' ', dt2, ' :', chkCurrCondition);
                 if (!chkCurrCondition) {
                     errMsg += msg + '\n';
                     $$.setElement(dt1, '');
@@ -289,6 +290,7 @@
             if (!passedAllChecks) {
                 alert(errMsg);
             }
+            return passedAllChecks
         },
 
         isAtMostHoursAfter: (dt1, hours, dt2, errMsg) => {
@@ -312,7 +314,19 @@
             });
         },
 
-        getFormElement: (el) => (getFormElement(el)).replace(/[{}]/g, '')
+        getFormElement: (el) => (getFormElement(el)).replace(/[{}]/g, ''),
+
+        copyEvents: (fromEl, toEl, events) => {
+            events = _box(events);
+            events.forEach(function (ev, i) {
+                var func = fromEl[ev];
+                if (func) {
+                    toEl[ev] = function (evt) {
+                        func.call(this);
+                    };
+                }
+            });
+        }
 
     };
 

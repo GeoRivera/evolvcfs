@@ -1,7 +1,6 @@
-// 1 actual_date
+// *** Actual Date
 // Equal or Greater than {udf_datetimearrivedined_TA}
-$$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED');
-
+// OnLoad
 setTimeout(function () {
     var fieldName = 'actual_date';
     $('#time_' + fieldName)
@@ -9,6 +8,10 @@ setTimeout(function () {
             $$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED');
         })
 }, 50);
+
+// OnChange
+$$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED');
+
 
 
 // *** Group 2
@@ -83,6 +86,143 @@ $$.eraseOnDisable('udf_medicalclearanceprovided_TA', 'udf_whoprovidedmedclearanc
 // Final Disposition
 // [onchange]
 $$.eraseOnDisable('udf_finaldisposition_TA', 'udf_inpatientdispo_TA');
+
+
+// *** Group 11
+// Date/Time of Request
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimeofrequest_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date');
+$$.setRequiredIfEntered('udf_datetimeofrequest_TA');
+
+
+// *** Group 12
+// Date/Time of Readiness
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimeofreadiness_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimeofreadiness_TA', 'udf_datetimeofrequest_TA', 'Date/Time Readiness must be after Date/Time of Request');
+$$.setRequiredIfEntered('udf_datetimeofreadiness_TA');
+
+
+// *** Group 13
+// Date/Time Intervention Began
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimeinterventinbegan_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimeinterventinbegan_TA', 'udf_datetimeofreadiness_TA', 'Date/Time Intervention Began must be after Date/Time of Readiness');
+$$.setRequiredIfEntered('udf_datetimeinterventinbegan_TA');
+
+
+// *** Group 14
+// Date/Time Intervention Ended
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimeinterventionended_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimeinterventionended_TA', 'udf_datetimeinterventinbegan_TA', 'Date/Time Intervention Ended must be after Date/Time Intervention Began');
+$$.setRequiredIfEntered('udf_datetimeinterventionended_TA');
+
+
+// *** Group 15
+// Date/Time Bed Search Began
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimebedsearchbegan_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimebedsearchbegan_TA', 'udf_datetimeinterventinbegan_TA', 'Date/Time Bed Search Began must be after Date/Time Intervention Began');
+$$.setRequiredIfEntered('udf_datetimebedsearchbegan_TA');
+
+
+// *** Group 16
+// Date/Time Placement Secured
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimeplacementsecured_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimeplacementsecured_TA', 'udf_datetimebedsearchbegan_TA', 'Date/Time Placement Secured must be after Date/Time Bed Search Began');
+$$.setRequiredIfEntered('udf_datetimeplacementsecured_TA');
+
+
+// *** Group 17
+// Date/Time Placed for Consult
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimecallplacedforconsult_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimecallplacedforconsult_TA', 'udf_datetimeinterventinbegan_TA', 'Date/Time Call Placed for Consult must be after Date/Time Intervention Began');
+$$.setRequiredIfEntered('udf_datetimecallplacedforconsult_TA');
+
+
+// *** Group 18
+// Date/Time Consult Began
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_datetimesonsultbegan_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_datetimesonsultbegan_TA', 'udf_datetimecallplacedforconsult_TA', 'Date/Time Consult Began must be after Date/Time Call Placed for Consult');
+$$.setRequiredIfEntered('udf_datetimesonsultbegan_TA');
+
+
+// *** Group 19
+// Date/Time Emergency Psychopharm
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_dateforemrgencypschopharm_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_dateforemrgencypschopharm_TA', 'udf_datetimeinterventinbegan_TA', 'Date/Time Called for Emergency Psychopharm must be after Date/Time Intervention Began');
+$$.setRequiredIfEntered('udf_dateforemrgencypschopharm_TA');
+
+
+// *** Group 20
+// Date/Time Emergency Psychopharm Began
+// OnLoad
+setTimeout(function () {
+    var fieldName = 'udf_dateemergencypsychopharmgegan_TA';
+    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+}, 50);
+
+// OnChange
+$$.dateIsAfter('udf_dateemergencypsychopharmgegan_TA', 'udf_dateforemrgencypschopharm_TA', 'Date/Time Emergency Psychopharm Began must be after Date/Time Called for Emergency Psychopharm');
+$$.setRequiredIfEntered('udf_dateemergencypsychopharmgegan_TA');
+
+
+
+
+
+
+
 
 
 
