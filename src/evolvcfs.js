@@ -84,6 +84,10 @@
         var oldValue = $('#' + fieldName).attr('old_value');
         var currValue = $$.getElement(fieldName);
 
+        if (_isDateTimeField(fieldName) && currValue.length <= 16) { // If datetime is incomplete, builds datetime from date and time fields
+            currValue = $('#' + fieldName).val() + ' ' + $('#time_' + fieldName).val()
+        }
+
         if (!_exists(oldValue)) {
             $('#' + fieldName).attr('old_value', '');
         }
