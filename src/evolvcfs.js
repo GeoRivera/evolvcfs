@@ -79,14 +79,19 @@
     const _isBlank = (fieldName) => _isDateTimeField(fieldName) ? _isBlankDtTm(fieldName) : (getFormElement(fieldName) === '');
     const _hasValue = (fieldName) => _isDateTimeField(fieldName) ? _not(_isBlankDtOrTm)(fieldName) : _not(_isBlank)(fieldName);
 
-
-    const _wasModified = (fieldName) => {
-        var oldValue = $('#' + fieldName).attr('old_value');
+    const _getCurrValue = (fieldName) => {
         var currValue = $$.getElement(fieldName);
 
         if (_isDateTimeField(fieldName) && currValue.length <= 16) { // If datetime is incomplete, builds datetime from date and time fields
             currValue = $('#' + fieldName).val() + ' ' + $('#time_' + fieldName).val()
         }
+
+        return currValue
+    }
+
+    const _wasModified = (fieldName) => {
+        var oldValue = $('#' + fieldName).attr('old_value');
+        var currValue = _getCurrValue(fieldName);
 
         if (!_exists(oldValue)) {
             $('#' + fieldName).attr('old_value', '');
@@ -99,7 +104,7 @@
     }
 
     const _keepValue = (fieldName) => {
-        var currValue = $$.getElement(fieldName);
+        var currValue = _getCurrValue(fieldName);
         if (_hasValue(fieldName)) {
             $('#' + fieldName).attr('old_value', currValue);
         }
