@@ -279,7 +279,7 @@
             let passedAllChecks = arr.reduce((acc, xs) => {
                 let [dt1, comp, dt2, msg] = [...xs];
                 let chkCurrCondition = $$.dtComp(dt1, comp, dt2);
-                console.log(dt1, ' ', comp, ' ', dt2, ' :', chkCurrCondition);
+                // console.log(dt1, ' ', comp, ' ', dt2, ' :', chkCurrCondition);
                 if (!chkCurrCondition) {
                     errMsg += msg + '\n';
                     $$.setElement(dt1, '');
