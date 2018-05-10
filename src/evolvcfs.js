@@ -327,6 +327,10 @@
                 }
             });
 
+        },
+
+        syncDtTmEvents: (fieldName) => {
+            $$.copyEvents(document.getElementById(fieldName), document.getElementById('time_' + fieldName), ['onchange', 'onblur']);
         }
 
     };
