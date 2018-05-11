@@ -185,7 +185,6 @@
             }
         },
 
-        // getElement: (el, src) => _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el),
         getElement: (el, src) => {
             var res = _fromNullable(src) ? getElementFromXML(formXML, el) : getFormElement(el);
 

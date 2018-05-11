@@ -73,7 +73,7 @@ $$.eraseOnDisable('udf_primaryfundingsource_TA', ['udf_commercialinsname_TA', 'u
 
 
 // *** Group 9
-// Medical Clearance Requested
+// Medical Clearance Requestedg
 // [onchange]
 $$.eraseOnDisable('udf_medclearancerequeted_TA', 'udf_whorequestedmedclear_TA');
 
@@ -92,13 +92,11 @@ $$.eraseOnDisable('udf_finaldisposition_TA', 'udf_inpatientdispo_TA');
 // Date/Time of Request
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimeofrequest_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimeofrequest_TA')
 }, 50);
 
 // OnChange
 $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request must be after Actual Date');
-$$.setRequiredIfEntered('udf_datetimeofrequest_TA');
 
 
 // *** Group 12
@@ -111,7 +109,6 @@ setTimeout(function () {
 
 // OnChange
 $$.dateIsAfter('udf_datetimeofreadiness_TA', 'udf_datetimeofrequest_TA', 'Date/Time Readiness must be after Date/Time of Request');
-$$.setRequiredIfEntered('udf_datetimeofreadiness_TA');
 
 
 // *** Group 13
@@ -124,7 +121,6 @@ setTimeout(function () {
 
 // OnChange
 $$.dateIsAfter('udf_datetimeinterventinbegan_TA', 'udf_datetimeofreadiness_TA', 'Date/Time Intervention Began must be after Date/Time of Readiness');
-$$.setRequiredIfEntered('udf_datetimeinterventinbegan_TA');
 
 
 // *** Group 14
@@ -137,7 +133,6 @@ setTimeout(function () {
 
 // OnChange
 $$.dateIsAfter('udf_datetimeinterventionended_TA', 'udf_datetimeinterventinbegan_TA', 'Date/Time Intervention Ended must be after Date/Time Intervention Began');
-$$.setRequiredIfEntered('udf_datetimeinterventionended_TA');
 
 
 // *** Group 15
