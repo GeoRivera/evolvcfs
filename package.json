@@ -1,38 +1,29 @@
 {
   "name": "evolvcfs",
-  "version": "1.0.0",
-  "description": "This is a \"first stab\" at develping a helper function library for developing Evolv-CS Forms.",
+  "version": "1.0.1",
+  "description": "A helper function library for developing **Evolv-CS** Forms.\r + **jQuery** is a dependency (pre-loaded by Evolv-CS)\r + I'm also relying on **es5-shim** to keep me sane.\r + The code needs to work on **ie5** due to some legacy *VBScript* functions the System depends on.",
   "private": true,
+  "directories": {
+    "lib": "lib"
+  },
   "dependencies": {
-    "babel": "^6.23.0",
-    "jquery": "^3.3.1",
-    "jsdom-quokka-plugin": "^1.0.11"
+    "babel-plugin-minify-dead-code-elimination": "^0.4.1",
+    "babel-plugin-minify-mangle-names": "^0.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-minify": "^0.3.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
     "babel-plugin-transform-es3-property-literals": "^6.22.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-minify": "^0.3.0",
-    "babel-register": "^6.26.0",
-    "es5-shim": "^4.5.10",
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1",
-    "webpack": "^4.8.1",
+    "babel-preset-env": "^1.7.0",
+    "rename-cli": "^5.1.0",
+    "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "set BABEL_ENV=prod && del-cli lib/*.min.js && babel src -d lib && rname -r \"(?<fname>[a-zA-Z_]*).*\" lib/*.js \"{{fname}}.min.js\"",
-    "dev": "set BABEL_ENV=dev && babel src -d lib",
-    "build_z": "del-cli lib/*.min.js && babel src -d lib && rname -r \"(?<fname>[a-zA-Z_]*).*\" lib/*.js \"{{fname}}.min.js\"",
-    "forms": "del-cli forms_min/*.min.js && babel forms -d forms_min && rname -r \"(?<fname>[a-zA-Z_]*).*\" forms_min/*.js \"{{fname}}.min.js\"",
-    "other": "del-cli misc_min/*.min.js && babel misc -d misc_min && rname -r \"(?<fname>[a-zA-Z_]*).*\" misc_min/*.js \"{{fname}}.min.js\"",
-    "__disabled__build": "babel src -d lib",
-    "__disabled__forms": "babel forms -d forms_min",
-    "__disabled__minforms": "rname -r \"(?<fname>[a-zA-Z_]*).*\" forms_min/*.js \"{{fname}}.min.js\""
+    "test": "rename -r '^(?<name>[A-Za-z_]+)' --noindex ./forms_min/*.js '{{name}}.min.js'",
+    "build:forms": " babel --compact=true forms -d forms_min"
   },
   "repository": {
     "type": "git",

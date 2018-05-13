@@ -1,22 +1,12 @@
 {
-    "presets": [
-        ["env",
-            {
-                "targets": {
-                    "ie": 6
-                }
-            }
-        ],
-        ["minify",
-            {
-                "mangle": {
-                    "exclude": {
-                        "hasActiveEnrollment": true
-                    }
-                },
-                "simplifyComparisons": true
-            }
-        ]
-
-    ]
+    "presets": ["env"],
+    "plugins": ["transform-es3-member-expression-literals", "transform-es3-property-literals", "minify-mangle-names", "minify-dead-code-elimination"],
+    "env": {
+        "development": {
+            "plugins": []
+        },
+        "production": {
+            "plugins": []
+        }
+    }
 }

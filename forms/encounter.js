@@ -2,6 +2,7 @@
     var _getFormElement = _tryCatch(getFormElement);
     var _getDataValue = _tryCatch(getDataValue);
     var _setFormElement = _tryCatch(setFormElement);
+    var _setFormElementFromData = _tryCatch(setFormElementFromData);
     var _getElementFromXML = _tryCatch(getElementFromXML);
     var _formElementExists = _tryCatch(formElementExists);
     var _getFormElementDOM = _tryCatch(getFormElementDOM);
@@ -89,7 +90,7 @@
         for (let i = 0; i < xs.length; i++) {
             if (!(_getFormElement(xs[i][0]))) {
                 if (_formElementExists(xs[i][0])) {
-                    setFormElementFromData(xs[i][0], 'test_header_x', 'test_header_id', evalId, xs[i][1]);
+                    _setFormElementFromData(xs[i][0], 'test_header_x', 'test_header_id', evalId, xs[i][1]);
                 }
             }
         }
@@ -140,7 +141,9 @@
     function _tryCatch(fn) {
         try {
             return fn
-        } catch (e) {}
+        } catch (e) {
+            console.warn('_tryCatch: ', e)
+        }
     }
 
     function getEvalId() {
