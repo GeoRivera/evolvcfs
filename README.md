@@ -22,9 +22,9 @@ $(&apos;body&apos;).append(&apos;&lt;script src=\&apos;https://cdn.jsdelivr.net/
 ```javascript
 // direct link
 $('body').append('<script src=\'https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js\'></script>');
-$('body').append('<script src=\'https://rawgit.com/GeoRivera/evolvcfs/DEV/src/evolvcfsjs\'></script>');
+$('body').append('<script src=\'https://rawgit.com/GeoRivera/evolvcfs/DEV/lib/evolvcfsjs\'></script>');
 
 // escaped link for use inside XML
 $(&apos;body&apos;).append(&apos;&lt;script src=\&apos;https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js\&apos;&gt;&lt;/script&gt;&apos;);
-$(&apos;body&apos;).append(&apos;&lt;script src=\&apos;https://rawgit.com/GeoRivera/evolvcfs/DEV/src/evolvcfs.js\&apos;&gt;&lt;/script&gt;&apos;);
+$(&apos;body&apos;).append(&apos;&lt;script src=\&apos;https://rawgit.com/GeoRivera/evolvcfs/DEV/lib/evolvcfs.js\&apos;&gt;&lt;/script&gt;&apos;);
 ```
