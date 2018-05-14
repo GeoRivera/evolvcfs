@@ -14,16 +14,21 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
+    "babel-minify": "^0.4.2",
     "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
     "babel-plugin-transform-es3-property-literals": "^6.22.0",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-minify": "^0.4.2",
     "rename-cli": "^5.1.0",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   },
   "scripts": {
     "test": "rename -r '^(?<name>[A-Za-z_]+)' --noindex ./forms_min/*.js '{{name}}.min.js'",
-    "build:forms": " babel --compact=true forms -d forms_min"
+    "build:forms": "babel --compact=true forms -d forms_min",
+    "build:dev": "babel --compact=false src -d lib --no-comments",
+    "build:prod": "webpack",
+    "build": "npm run build:dev && npm run build:prod"
   },
   "repository": {
     "type": "git",
