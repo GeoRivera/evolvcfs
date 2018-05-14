@@ -2,11 +2,7 @@
 // Equal or Greater than {udf_datetimearrivedined_TA}
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'actual_date';
-    $('#time_' + fieldName)
-        .change(function () {
-            $$.dateIsAfter('actual_date', 'udf_datetimearrivedined_TA', 'Actual Date must be after Date/Time Arrived in ED');
-        })
+    $$.syncDtTmEvents('actual_date')
 }, 50);
 
 // OnChange
@@ -90,6 +86,7 @@ $$.eraseOnDisable('udf_finaldisposition_TA', 'udf_inpatientdispo_TA');
 
 // *** Group 11
 // Date/Time of Request
+// Equal or Greater than {actual_date}
 // OnLoad
 setTimeout(function () {
     $$.syncDtTmEvents('udf_datetimeofrequest_TA')
@@ -101,10 +98,10 @@ $$.dateIsAfter('udf_datetimeofrequest_TA', 'actual_date', 'Date/Time of Request 
 
 // *** Group 12
 // Date/Time of Readiness
+// Equal or Greater than 11
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimeofreadiness_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimeofreadiness_TA')
 }, 50);
 
 // OnChange
@@ -113,10 +110,11 @@ $$.dateIsAfter('udf_datetimeofreadiness_TA', 'udf_datetimeofrequest_TA', 'Date/T
 
 // *** Group 13
 // Date/Time Intervention Began
+// Equal or Greater than 12
+// At most 24h after 12
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimeinterventinbegan_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimeinterventinbegan_TA')
 }, 50);
 
 // OnChange
@@ -125,10 +123,11 @@ $$.dateIsAfter('udf_datetimeinterventinbegan_TA', 'udf_datetimeofreadiness_TA', 
 
 // *** Group 14
 // Date/Time Intervention Ended
+// Equal or Greater than 13
+// At most 14dd after 13
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimeinterventionended_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimeinterventionended_TA')
 }, 50);
 
 // OnChange
@@ -137,10 +136,10 @@ $$.dateIsAfter('udf_datetimeinterventionended_TA', 'udf_datetimeinterventinbegan
 
 // *** Group 15
 // Date/Time Bed Search Began
+// Equal or Greater than 13
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimebedsearchbegan_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimebedsearchbegan_TA')
 }, 50);
 
 // OnChange
@@ -150,10 +149,11 @@ $$.setRequiredIfEntered('udf_datetimebedsearchbegan_TA');
 
 // *** Group 16
 // Date/Time Placement Secured
+// Equal or Greater than 15
+// At most 14dd after 15
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimeplacementsecured_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimeplacementsecured_TA')
 }, 50);
 
 // OnChange
@@ -163,10 +163,10 @@ $$.setRequiredIfEntered('udf_datetimeplacementsecured_TA');
 
 // *** Group 17
 // Date/Time Placed for Consult
+// Equal or Greater than 13
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimecallplacedforconsult_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimecallplacedforconsult_TA')
 }, 50);
 
 // OnChange
@@ -176,10 +176,11 @@ $$.setRequiredIfEntered('udf_datetimecallplacedforconsult_TA');
 
 // *** Group 18
 // Date/Time Consult Began
+// Equal or Greater than 17
+// At most 12h after 17
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_datetimesonsultbegan_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_datetimesonsultbegan_TA')
 }, 50);
 
 // OnChange
@@ -189,10 +190,10 @@ $$.setRequiredIfEntered('udf_datetimesonsultbegan_TA');
 
 // *** Group 19
 // Date/Time Emergency Psychopharm
+// Equal or Greater than 13
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_dateforemrgencypschopharm_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_dateforemrgencypschopharm_TA')
 }, 50);
 
 // OnChange
@@ -202,10 +203,11 @@ $$.setRequiredIfEntered('udf_dateforemrgencypschopharm_TA');
 
 // *** Group 20
 // Date/Time Emergency Psychopharm Began
+// Equal or Greater than 19
+// At most 12h after 19
 // OnLoad
 setTimeout(function () {
-    var fieldName = 'udf_dateemergencypsychopharmgegan_TA';
-    $('#time_' + fieldName).change($('#' + fieldName).attr('change'))
+    $$.syncDtTmEvents('udf_dateemergencypsychopharmgegan_TA')
 }, 50);
 
 // OnChange
@@ -214,7 +216,9 @@ $$.setRequiredIfEntered('udf_dateemergencypsychopharmgegan_TA');
 
 
 
-
+// udf_datetimefinaldisposecured_TA
+// Equal or Greater than all other Dates
+// At most 30dd after 13
 
 
 
