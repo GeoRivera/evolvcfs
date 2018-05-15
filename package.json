@@ -1,6 +1,6 @@
 {
   "name": "evolvcfs",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A helper function library for developing **Evolv-CS** Forms.\r + **jQuery** is a dependency (pre-loaded by Evolv-CS)\r + I'm also relying on **es5-shim** to keep me sane.\r + The code needs to work on **ie5** due to some legacy *VBScript* functions the System depends on.",
   "private": true,
   "directories": {
@@ -25,10 +25,13 @@
   },
   "scripts": {
     "test": "rename -r '^(?<name>[A-Za-z_]+)' --noindex ./forms_min/*.js '{{name}}.min.js'",
+    "webpack": "webpack",
+    "minifylib": "minify ./lib/evolvcfs.js --out-file  ./lib/evolvcfs.min.js",
     "build:forms": "babel --compact=true forms -d forms_min",
     "build:dev": "babel --compact=false src -d lib --no-comments",
-    "build:prod": "webpack",
-    "build": "npm run build:dev && npm run build:prod"
+
+    "build:prod": "npm run build:dev && npm run minifylib",
+    "build": "npm run build:prod"
   },
   "repository": {
     "type": "git",
