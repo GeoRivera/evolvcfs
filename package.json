@@ -1,6 +1,6 @@
 {
   "name": "evolvcfs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A helper function library for developing **Evolv-CS** Forms.\r + **jQuery** is a dependency (pre-loaded by Evolv-CS)\r + I'm also relying on **es5-shim** to keep me sane.\r + The code needs to work on **ie5** due to some legacy *VBScript* functions the System depends on.",
   "private": true,
   "directories": {
