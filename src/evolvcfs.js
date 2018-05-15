@@ -348,7 +348,9 @@
         },
 
         syncDtTmEvents: (fieldName) => {
-            $$.copyEvents(document.getElementById(fieldName), document.getElementById('time_' + fieldName), ['onchange', 'onblur']);
+            // $$.copyEvents(document.getElementById(fieldName), document.getElementById('time_' + fieldName), ['onchange', 'onblur']);
+            fieldname = _box(fieldName);
+            fieldName.map(x => $$.copyEvents(document.getElementById(x), document.getElementById('time_' + x), ['onchange', 'onblur']));
         }
 
     };
