@@ -348,9 +348,14 @@
         },
 
         syncDtTmEvents: (fieldName) => {
-            // $$.copyEvents(document.getElementById(fieldName), document.getElementById('time_' + fieldName), ['onchange', 'onblur']);
             fieldName = _box(fieldName);
             fieldName.map(x => $$.copyEvents(document.getElementById(x), document.getElementById('time_' + x), ['onchange', 'onblur']));
+        },
+
+        hideFormField: (fieldName) => {
+            _tryCatch(getFormElementDOM(fieldName).style.display = 'none');
+            _tryCatch(getFormElementDOM('caption_' + fieldName).style.display = 'none');
+            formState(formXML, false);
         }
 
     };
