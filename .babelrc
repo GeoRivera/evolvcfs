@@ -1,6 +1,7 @@
 {
     "presets": ["env"],
-    "plugins": ["transform-es3-member-expression-literals", "transform-es3-property-literals", "minify-mangle-names", "minify-dead-code-elimination"],
+    // "plugins": ["transform-es3-member-expression-literals", "transform-es3-property-literals", "minify-mangle-names", "minify-dead-code-elimination"],
+    "plugins": ["transform-es3-member-expression-literals", "transform-es3-property-literals", "minify-dead-code-elimination"],
     "env": {
         "production": {
             "plugins": ["minify", {
